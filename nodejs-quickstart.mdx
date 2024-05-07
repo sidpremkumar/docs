@@ -90,6 +90,28 @@ If done correctltly, you will be able to see the logs in the Lytix platform.
 
 ![title](/images/node-quickstart/lytix-trace-with-log.png)
 
+## LLM Model Input Output Collection
+
+Lytix supports automatically collecting the input and output of LLM models. To do this you can use the following
+
+```ts
+import { MetricCollector } from "@lytix/client";
+
+MetricCollector.captureModelIO(
+  "testModelName",
+  "Some user input",
+  "Some model output",
+  {
+    /**
+     * Optional extra data
+     */
+    env: "prod",
+  }
+);
+```
+
+Lytix will automatically process the input and output of the LLM model and push the metrics to the Lytix platform. You can see your model metrics in the Lytix platform [here](https://lytix.co/home/llm/).
+
 ## Manual Metric Collection
 
 You always have the option to manually push metrics to the Lytix platform with custom names and metadata. 
