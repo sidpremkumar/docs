@@ -36,11 +36,9 @@ The following example pushes a metric to the Lytix platform with the name `testM
 
 
 ```python
-from lytix_py.MetricCollector.MetricCollector import MetricCollector
+from lytix_py import MetricCollector
 
-metricCollector = MetricCollector()
-
-test.increment("testMetic", 1, {"env": "prod"})
+MetricCollector.increment("testMetic", 1, {"env": "prod"})
 ```
 
 
