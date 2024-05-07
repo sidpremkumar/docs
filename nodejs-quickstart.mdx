@@ -1,0 +1,107 @@
+---
+title: 'NodeJS Quickstart'
+description: 'Start collecting data from your NodeJS (Express) project'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+
+</Info>
+
+Install the Lytix NPM package
+
+<CodeGroup>
+
+```bash npm
+npm i @lytix/client
+```
+
+```bash yarn
+yarn add @lytix/client
+```
+
+</CodeGroup>
+
+## Express Analytic Collection
+
+Lytix provides an out of the box middleware that you can use to collect data from your NodeJS (Express) project.
+
+To get started, simply add the middleware to your Express app.
+
+```ts
+import { AnalyticRequestHandler } from "@lytix/client";
+
+....
+const app = express();
+...
+
+/**
+ * Create a logger and give it a name. Whenever you log with this (anywhere
+ * in your application). The logs will automatically be be pushed to Lytix 
+ * when a non-200 status code is returned.
+ */
+export const logger = new LLogger("main");
+
+/**
+ * Pass the logger in as the 4th argument here
+ */
+app.use((req, res, next) => {
+  return AnalyticRequestHandler(req, res, next, logger);
+});
+
+/**
+ * The rest is the same
+ */
+```
+
+You now have basic metric collection setup. Requests will be published with the `requestDuration` metric name
+
+![title](/images/node-quickstart/lytix-traces.png)
+
+### Collect Trace Logs
+
+Lytix also supports pushing logs to the Lytix platform. Under the hood this is done by using the HTTP request context to bundle the logs and push them to the Lytix platform when a non-200 status code is returned.
+
+To do this update the code as follows: 
+
+```ts 
+import { AnalyticRequestHandler } from "@lytix/client";
+
+....
+const app = express();
+...
+
+/**
+ * Add our HTTP context
+ */
+app.use(httpContext.middleware);
+
+
+/**
+ * This handle is used to push basic HTTP metrics along with
+ * any errors and their traces
+ */
+app.use((req, res, next) => {
+  return AnalyticRequestHandler(req, res, next);
+});
+```
+
+If done correctltly, you will be able to see the logs in the Lytix platform.
+
+![title](/images/node-quickstart/lytix-trace-with-log.png)
+
+## Manual Metric Collection
+
+You always have the option to manually push metrics to the Lytix platform with custom names and metadata. 
+
+The following example pushes a metric to the Lytix platform with the name `testMetic` and the value `1` along with the `env: prod` metadata. 
+
+```ts
+import { MetricCollector } from "@lytix/client";
+
+MetricCollector.increment("testMetic", 1, { env: "prod" });
+```
+
+You then have access to that on the Lytix platform and can filter on any of the metadata passed.
+
+![title](/images/node-quickstart/testMetricExample.png)

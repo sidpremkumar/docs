@@ -1,0 +1,36 @@
+---
+title: 'Python Quickstart'
+description: 'Start collecting data from your Python project'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix pip package
+
+
+```bash
+pip3 install lytix-py
+```
+
+
+## Manual Metric Collection
+
+You always have the option to manually push metrics to the Lytix platform with custom names and metadata. 
+
+The following example pushes a metric to the Lytix platform with the name `testMetic` and the value `1` along with the `env: prod` metadata. 
+
+
+```python
+from lytix_py.MetricCollector.MetricCollector import MetricCollector
+
+metricCollector = MetricCollector()
+
+test.increment("testMetic", 1, {"env": "prod"})
+```
+
+
+You then have access to that on the Lytix platform and can filter on any of the metadata passed.
+
+![title](/images/node-quickstart/testMetricExample.png)

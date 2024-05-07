@@ -1,0 +1,34 @@
+---
+title: 'API Key Setup'
+description: 'How to get and set your API Key environment variable'
+---
+
+## API Key Generation 
+
+Head over to [Lytix platform](https://lytix.co/login) and navigate to the "Settings->API Keys" [page](https://lytix.co/home/settings/apiKeys/). 
+
+
+![title](/images/apiKeySetup/apiKeyOverview.png)
+
+Click "New API Key" and give it a name to remember it (Note: the name _can_ be changed later)
+
+![title](/images/apiKeySetup/apiKeyNameCreate.png)
+
+Then click the options button to copy the API key to your clipboard
+
+![title](/images/apiKeySetup/apiKeyCopyToClipboard.png)
+
+The API then should be copied directly to your clipboard.
+
+## Environment Variable Setup
+
+All Lytix SDKs use the `LX_API_KEY` environment variable to authenticate with the Lytix platform. 
+
+You can set this environment variable in your local development environment by adding it to your `.env` file.
+
+```bash
+export LX_API_KEY=<your-api-key>
+```
+
+You can now continue to the [NodeJS](/nodejs-quickstart) or [Python](/python-quickstart) Quickstart.
+
