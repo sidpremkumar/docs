@@ -2,10 +2,10 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Lytix",
   "logo": {
-    "dark": "/logo/lytix-logo.jpg",
-    "light": "/logo/lytix-logo.jpg"
+    "dark": "/logo/lytix-logo.svg",
+    "light": "/logo/lytix-logo.svg"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/lytix-logo.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
