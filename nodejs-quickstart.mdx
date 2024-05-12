@@ -90,6 +90,22 @@ If done correctltly, you will be able to see the logs in the Lytix platform.
 
 ![title](/images/node-quickstart/lytix-trace-with-log.png)
 
+### Add metadata to the logs
+
+You can also add metadata to the logs by adding it to the HTTP context. This is useful if you want to add metadata to the logs that is not automatically captured. Metadata set will _always_ be logged. 
+
+```ts
+...
+app.use((req, res, next) => {
+  /**
+   * Lets say we auth the user and get their UID
+   */
+  mmLogger.setMetadata({ key: "userId", value: "123" });
+  next();
+});
+...
+```
+
 ## LLM Model Input Output Collection
 
 Lytix supports automatically collecting the input and output of LLM models. To do this you can use the following
@@ -97,7 +113,7 @@ Lytix supports automatically collecting the input and output of LLM models. To d
 ```ts
 import { MetricCollector } from "@lytix/client";
 
-MetricCollector.captureModelIO(
+await MetricCollector.captureModelIO(
   "testModelName",
   "Some user input",
   "Some model output",
@@ -112,6 +128,31 @@ MetricCollector.captureModelIO(
 
 Lytix will automatically process the input and output of the LLM model and push the metrics to the Lytix platform. You can see your model metrics in the Lytix platform [here](https://lytix.co/home/llm/).
 
+### LLM Model Trace Collection
+
+Lytix also support capturing trace information (e.g. duration) for the LLM model. To do this you can use the following
+
+```ts
+import { MetricCollector } from "@lytix/client";
+
+const response = await MetricCollector.captureModelTrace(
+  "testModelName",
+  "Some user input",
+  async () => {
+    const openai = new OpenAI();
+    ...
+    /**
+     * This callback is expecting the model output to be returned
+     */
+    return response;
+  }
+);
+```
+
+You'll now see the model duration trace in the Lytix platform [here](https://lytix.co/home/llm/).
+
+![title](/images/node-quickstart/modelDurationTrace.png)
+
 ## Manual Metric Collection
 
 You always have the option to manually push metrics to the Lytix platform with custom names and metadata. 
@@ -121,7 +162,7 @@ The following example pushes a metric to the Lytix platform with the name `testM
 ```ts
 import { MetricCollector } from "@lytix/client";
 
-MetricCollector.increment("testMetic", 1, { env: "prod" });
+await MetricCollector.increment("testMetic", 1, { env: "prod" });
 ```
 
 You then have access to that on the Lytix platform and can filter on any of the metadata passed.

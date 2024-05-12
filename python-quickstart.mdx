@@ -23,10 +23,34 @@ from lytix_py import MetricCollector
 
 
 # Note the metricMetadata is optional
-MetricCollector.captureModelIO(modelName="nodeCli",userInput="Whats the capital of France?",modelOutput="Paris is the capital of France", metricMetadata={"env": "dev"})
+MetricCollector.captureModelIO(modelName="testModelName",userInput="Whats the capital of France?",modelOutput="Paris is the capital of France", metricMetadata={"env": "dev"})
 ```
 
 Lytix will automatically process the input and output of the LLM model and push the metrics to the Lytix platform. You can see your model metrics in the Lytix platform [here](https://lytix.co/home/llm/).
+
+
+### LLM Model Trace Collection
+
+Lytix also support capturing trace information (e.g. duration) for the LLM model. To do this you can use the following
+
+```py
+from lytix_py import MetricCollector
+
+userInput = "Whats the capital of France?"
+
+"""
+This callback is expecting the model output to be returned
+"""
+def callback(): 
+  ...
+  return "Paris is the capital of france"
+
+response = MetricCollector.captureModelTrace(modelName="testModelName", userInput=userInput, callback=callback)
+```
+
+You'll now see the model duration trace in the Lytix platform [here](https://lytix.co/home/llm/).
+
+![title](/images/node-quickstart/modelDurationTrace.png)
 
 ## Manual Metric Collection
 
