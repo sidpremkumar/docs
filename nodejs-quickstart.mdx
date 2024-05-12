@@ -29,6 +29,34 @@ Lytix provides an out of the box middleware that you can use to collect data fro
 To get started, simply add the middleware to your Express app.
 
 ```ts
+import { AnalyticRequestHandler , LLogger} from "@lytix/client";
+
+....
+const app = express();
+...
+
+/**
+ * This handle is used to push basic HTTP metrics along with
+ * any errors and their traces
+ */
+app.use((req, res, next) => {
+  return AnalyticRequestHandler(req, res, next);
+});
+
+
+```
+
+You now have basic metric collection setup. Requests will be published with the `requestDuration` metric name
+
+![title](/images/node-quickstart/lytix-traces.png)
+
+### Collect Trace Logs
+
+Lytix also supports pushing logs to the Lytix platform. Under the hood this is done by using the HTTP request context to bundle the logs and push them to the Lytix platform when a non-200 status code is returned.
+
+To do this update the code as follows: 
+
+```ts 
 import { AnalyticRequestHandler } from "@lytix/client";
 
 ....
@@ -52,38 +80,6 @@ app.use((req, res, next) => {
 /**
  * The rest is the same
  */
-```
-
-You now have basic metric collection setup. Requests will be published with the `requestDuration` metric name
-
-![title](/images/node-quickstart/lytix-traces.png)
-
-### Collect Trace Logs
-
-Lytix also supports pushing logs to the Lytix platform. Under the hood this is done by using the HTTP request context to bundle the logs and push them to the Lytix platform when a non-200 status code is returned.
-
-To do this update the code as follows: 
-
-```ts 
-import { AnalyticRequestHandler } from "@lytix/client";
-
-....
-const app = express();
-...
-
-/**
- * Add our HTTP context
- */
-app.use(httpContext.middleware);
-
-
-/**
- * This handle is used to push basic HTTP metrics along with
- * any errors and their traces
- */
-app.use((req, res, next) => {
-  return AnalyticRequestHandler(req, res, next);
-});
 ```
 
 If done correctltly, you will be able to see the logs in the Lytix platform.
