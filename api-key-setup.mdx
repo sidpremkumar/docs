@@ -32,3 +32,32 @@ export LX_API_KEY=<your-api-key>
 
 You can now continue to the [NodeJS](/nodejs-quickstart) or [Python](/python-quickstart) Quickstart.
 
+## Setting API Key In Code
+
+This is **not** reccomended but you can explicilty set the API key in your code.
+
+In Javascript: 
+
+```js
+import { LytixCreds, MetricCollector } from "@lytix/client";
+
+/**
+ * First set the API key 
+ */
+LytixCreds.setAPIKey("sk-1234");
+
+/**
+ * Then you can use Lytix normally
+ */
+await MetricCollector.increment("testMetric");
+```
+
+In Python: 
+
+```py
+from lytix_py import MetricCollector, LytixCreds
+
+LytixCreds.setAPIKey("sk-1234")
+
+MetricCollector.increment("testMetric");
+```
