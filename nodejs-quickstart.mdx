@@ -5,7 +5,6 @@ description: 'Start collecting data from your NodeJS (Express) project'
 
 <Info>
   **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
-
 </Info>
 
 Install the Lytix NPM package
@@ -46,8 +45,11 @@ app.use((req, res, next) => {
   return LytixRequestWrapper(req, res, next, false);
 });
 
-Note: If you enable request metrics, data will be published with the `requestDuration` metric name
 ```
+<Info>
+Note: If you enable request metrics, data will be published with the `requestDuration` metric name
+</Info>
+
 
 ### Manual Integration 
 
