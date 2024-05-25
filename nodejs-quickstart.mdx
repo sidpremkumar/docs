@@ -22,85 +22,116 @@ yarn add @lytix/client
 
 </CodeGroup>
 
-## Express Analytic Collection
+## Integration
+
+### Express Integration
 
 Lytix provides an out of the box middleware that you can use to collect data from your NodeJS (Express) project.
 
 To get started, simply add the middleware to your Express app.
 
-```ts
-import { AnalyticRequestHandler , LLogger} from "@lytix/client";
-
-....
-const app = express();
-...
-
-/**
- * This handle is used to push basic HTTP metrics along with
- * any errors and their traces
- */
-app.use((req, res, next) => {
-  return AnalyticRequestHandler(req, res, next);
-});
-
-
-```
-
-You now have basic metric collection setup. Requests will be published with the `requestDuration` metric name
-
-![title](/images/node-quickstart/lytix-traces.png)
-
-### Collect Trace Logs
-
-Lytix also supports pushing logs to the Lytix platform. Under the hood this is done by using the HTTP request context to bundle the logs and push them to the Lytix platform when a non-200 status code is returned.
-
-To do this update the code as follows: 
-
 ```ts 
-import { AnalyticRequestHandler } from "@lytix/client";
+import { LytixRequestWrapper } from "@lytix/client";
 
 ....
 const app = express();
 ...
-
-/**
- * Create a logger and give it a name. Whenever you log with this (anywhere
- * in your application). The logs will automatically be be pushed to Lytix 
- * when a non-200 status code is returned.
- */
-export const logger = new LLogger("main");
 
 /**
  * Pass the logger in as the 4th argument here
+ * @note The 4th argument is a boolean that can be set to true to collect metrics 
+ * related to your server
  */
 app.use((req, res, next) => {
-  return AnalyticRequestHandler(req, res, next, logger);
+  return LytixRequestWrapper(req, res, next, false);
 });
 
-/**
- * The rest is the same
- */
+Note: If you enable request metrics, data will be published with the `requestDuration` metric name
 ```
 
-If done correctltly, you will be able to see the logs in the Lytix platform.
+### Manual Integration 
 
-![title](/images/node-quickstart/lytix-trace-with-log.png)
+You can always wrap your entrypoint to get access to all of Lytix log tracing features (for example if you are running a cron job and have a main entrypoint)
 
-### Add metadata to the logs
+```ts
+import { LLogger } from "@lytix/client";
 
-You can also add metadata to the logs by adding it to the HTTP context. This is useful if you want to add metadata to the logs that is not automatically captured. Metadata set will _always_ be logged. 
+
+const logger = new LLogger("mainEntrypoint");
+
+const main = async () => {
+  logger.info(`Log from the main process`);
+  await someBackgroundProcess();
+};
+
+/**
+ * All we need to do is wrap our entrypoint and everything will
+ * be accessable
+ */
+logger.runInAsyncContext(main);
+```
+
+## Error Capturing
+
+#### Error Class
+
+You can now just replace all your `throw new Error` calls with `throw new LError`. For example: 
 
 ```ts
 ...
-app.use((req, res, next) => {
+app.get("/test", async (req, res) => {
   /**
-   * Lets say we auth the user and get their UID
+   * Lets pretend an error happend
    */
-  mmLogger.setMetadata({ key: "userId", value: "123" });
-  next();
+  try {
+    mmLogger.info("Some process is starting");
+    throw new LError("An unexpeted error", { env: "prod" });
+  } catch (err) {
+    mmLogger.error("crazy unexpeted error with this user: 123", err);
+    res.sendStatus(500);
+    return;
+  }
+
+  /**
+   * Magically if we ended here, we'd reply with a 200
+   */
+  res.send("Hello World");
 });
 ...
 ```
+
+The error, along with the last 20 log lines will automatically get pushed to the lytix platform [here](https://lab.lytix.co/home/errors)
+
+![title](/images/node-quickstart/LErrorExample.png)
+
+#### Error Increment
+
+You can also send an error along with related logs without throwing an error by using the `increment` method. 
+
+```ts
+import { LErrorIncrement, LLogger } from "@lytix/client";
+
+/**
+ * An example background process
+ */
+const backgroundProcess = async () => {
+  const logger = new LLogger("backgroundProcessExample", { userId: "123" });
+  try {
+    logger.info("Background process started for user!");
+    throw new Error("Unexpected error!");
+  } catch (err) {
+    /**
+     * Just increment to get the logs as well as the error
+     */
+    logger.error(`Unexpected error happened`, err);
+    LErrorIncrement("Unexpected error");
+  }
+};
+```
+
+#### Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-js/tree/master/src/examples)
 
 ## LLM Model Input Output Collection
 
