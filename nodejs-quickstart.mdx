@@ -82,14 +82,15 @@ You can now just replace all your `throw new Error` calls with `throw new LError
 ```ts
 ...
 app.get("/test", async (req, res) => {
+  const logger = new LLogger('testRoute');
   /**
    * Lets pretend an error happend
    */
   try {
-    mmLogger.info("Some process is starting");
+    logger.info("Some process is starting");
     throw new LError("An unexpeted error", { env: "prod" });
   } catch (err) {
-    mmLogger.error("crazy unexpeted error with this user: 123", err);
+    logger.error("crazy unexpeted error with this user: 123", err);
     res.sendStatus(500);
     return;
   }
