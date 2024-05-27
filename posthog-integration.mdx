@@ -1,0 +1,20 @@
+---
+title: 'PostHog Integration'
+description: 'Start pushing your LLM metrics to Posthog'
+---
+
+To get started pushing metrics to Posthog, you'll need to pull your Project API Key so Lytix can push data to Posthog. You can find this here: `https://us.posthog.com/project/$MY_PROJECT_ID/settings/project-details`. Replace `$MY_PROJECT_ID` with your PostHog project.
+
+![title](/images/posthog-integration/posthog-api-key.png)
+
+
+Now upload your API key to the Lytix platform [here](https://lab.lytix.co/home/settings/posthog/)
+
+![title](/images/posthog-integration/posthog-lytix-integration.png)
+
+And you are done! Lytix events will now be published to PostHog!
+
+<Info>
+  **Note:** Please ensure you set a user identifier when publishing model IO events to Lytix in order to publish this to posthog
+</Info>
+

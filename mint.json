@@ -30,7 +30,8 @@
         "introduction",
         "api-key-setup",
         "nodejs-quickstart",
-        "python-quickstart"
+        "python-quickstart",
+        "posthog-integration"
       ]
     }
   ],
