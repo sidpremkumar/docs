@@ -142,11 +142,11 @@ Lytix supports automatically collecting the input and output of LLM models. To d
 ```ts
 import { MetricCollector } from "@lytix/client";
 
-await MetricCollector.captureModelIO(
-  "testModelName",
-  "Some user input",
-  "Some model output",
-  {
+await MetricCollector.captureModelIO({
+  modelName: "testModelName",
+  modelInput: "Some user input",
+  modelOutput: "Some model output",
+  metricMetadata: {
     /**
      * Optional extra data
      */
@@ -164,10 +164,10 @@ Lytix also support capturing trace information (e.g. duration) for the LLM model
 ```ts
 import { MetricCollector } from "@lytix/client";
 
-const response = await MetricCollector.captureModelTrace(
-  "testModelName",
-  "Some user input",
-  async () => {
+const response = await MetricCollector.captureModelTrace({
+  modelName: "testModelName",
+  modelInput: "Some user input",
+  generateModelOutput: async () => {
     const openai = new OpenAI();
     ...
     /**
@@ -175,7 +175,7 @@ const response = await MetricCollector.captureModelTrace(
      */
     return response;
   }
-);
+});
 ```
 
 You'll now see the model duration trace in the Lytix platform [here](https://lytix.co/home/llm/).
