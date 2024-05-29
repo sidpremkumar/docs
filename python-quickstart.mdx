@@ -14,6 +14,83 @@ Install the Lytix pip package
 pip3 install lytix-py
 ```
 
+## Error Capturing
+
+#### Error Class
+
+You can now just replace all your `raise Exception` calls with `raise LError`. For example: 
+
+```py
+from lytix_py import LError
+from lytix_py.LLogger.LLogger import LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some process is starting")
+    raise LError("An unexpected error")
+
+async def main(): 
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+
+The error, along with the last 20 log lines will automatically get pushed to the lytix platform [here](https://lab.lytix.co/home/errors)
+
+![title](/images/node-quickstart/LErrorExample.png)
+
+#### Error Increment
+
+You can also send an error along with related logs without throwing an error by using the `increment` method. 
+
+```py
+from lytix_py.LError import LErrorIncrement
+from lytix_py.LLogger.LLogger import LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some context on the user here")
+    try:
+        raise Exception("LIncrement error happened")
+    except Exception as e:
+        logger.error("LIncrement error happened")
+        LErrorIncrement("Some error")
+                        
+async def main(): 
+    logger = LLogger("main-logger")
+    logger.info("Starting in our main LIncrement process")
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+
+#### Fast API Integration
+
+Lytix also support capturing errors in FastAPI. To get started first hook up our Lytix middleware:
+
+```py
+from lytix_py.FastAPIMiddleware.LytixMiddleware import LytixMiddleware
+from fastapi import FastAPI
+
+...
+app = FastAPI()
+
+app.add_middleware(LytixMiddleware)
+...
+```
+
+
+#### Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-py/tree/master/example)
+
+
 ## LLM Model Input Output Collection
 
 Lytix supports automatically collecting the input and output of LLM models. To do this you can use the following
@@ -23,7 +100,12 @@ from lytix_py import MetricCollector
 
 
 # Note the metricMetadata is optional
-MetricCollector.captureModelIO(modelName="testModelName",userInput="Whats the capital of France?",modelOutput="Paris is the capital of France", metricMetadata={"env": "dev"})
+MetricCollector.captureModelIO(
+  modelName="testModelName",
+  modelInput="Whats the capital of France?",
+  modelOutput="Paris is the capital of France", 
+  metricMetadata={"env": "dev"}
+)
 ```
 
 Lytix will automatically process the input and output of the LLM model and push the metrics to the Lytix platform. You can see your model metrics in the Lytix platform [here](https://lytix.co/home/llm/).
@@ -45,7 +127,11 @@ def callback():
   ...
   return "Paris is the capital of france"
 
-response = MetricCollector.captureModelTrace(modelName="testModelName", userInput=userInput, callback=callback)
+response = MetricCollector.captureModelTrace(
+  modelName="testModelName", 
+  modelInput=userInput, 
+  callback=callback
+)
 ```
 
 You'll now see the model duration trace in the Lytix platform [here](https://lytix.co/home/llm/).
