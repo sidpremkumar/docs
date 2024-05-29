@@ -146,11 +146,11 @@ userInput = "Whats the capital of France?"
 """
 This callback is expecting the model output to be returned
 """
-def callback(): 
+async def callback(*args): 
   ...
   return "Paris is the capital of france"
 
-response = MetricCollector.captureModelTrace(
+response = await MetricCollector.captureModelTrace(
   modelName="testModelName", 
   modelInput=userInput, 
   callback=callback
@@ -160,6 +160,34 @@ response = MetricCollector.captureModelTrace(
 You'll now see the model duration trace in the Lytix platform [here](https://lytix.co/home/llm/).
 
 ![title](/images/node-quickstart/modelDurationTrace.png)
+
+### LLM Model Logs Collection
+
+Similar to traces, we can also capture logs when a model is called. This will auto push the logs to the Lytix platform and associated with this trace
+
+```py
+from lytix_py import MetricCollector
+
+userInput = "Whats the capital of France?"
+
+"""
+This callback is expecting the model output to be returned
+"""
+async def callback(logger): 
+  ...
+  logger.info("Inside the callback")
+  return "Paris is the capital of france"
+
+response = await MetricCollector.captureModelTrace(
+  modelName="testModelName", 
+  modelInput=userInput, 
+  callback=callback
+)
+```
+
+<Frame type="glass" caption="Model IO event with associated logs">
+<img width={500} src="/images/python-quickstart/captureModelLogsExample.png" alt="captureModelLogsExample" />
+</Frame>
 
 ## Manual Metric Collection
 
