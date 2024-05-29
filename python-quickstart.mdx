@@ -38,7 +38,7 @@ if __name__ == "__main__":
     logger.runInAsyncContext(main)
 ```
 
-The error, along with the last 20 log lines will automatically get pushed to the lytix platform [here](https://lab.lytix.co/home/errors)
+The error, along with the last 20 log lines will automatically get pushed to the Lytix platform [here](https://lab.lytix.co/home/errors)
 
 ![title](/images/node-quickstart/LErrorExample.png)
 
@@ -83,6 +83,29 @@ app = FastAPI()
 
 app.add_middleware(LytixMiddleware)
 ...
+```
+
+Now you can throw errors in your FastAPI routes or subcalls as follows: 
+
+```py
+
+# main.py
+@app.get("/")
+async def read_root():
+    logger = LLogger("read-root")
+    logger.info('In the main view here...')
+    await backgroundFastAPIProcess()
+    return {"Hello": "World"}
+
+# backgroundProcess.py
+async def backgroundFastAPIProcess(): 
+    logger = LLogger("background-fast-api-process")
+    logger.info("In the background here")
+
+    """
+    All the logs associated with this request will get sent to lytix
+    """
+    raise LError("Some error")
 ```
 
 
