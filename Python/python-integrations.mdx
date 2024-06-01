@@ -50,6 +50,11 @@ print(response.choices[0].message.content)
 You just need to wrap your calls with our decorator and you're all set!
 
 ```py
+"""
+Create the client the same way
+"""
+openAIClient = OpenAI( ... )
+
 @lytix.trace
 def askQuestion(input: str) -> str:
   response = openAIClient.chat.completions.create(
