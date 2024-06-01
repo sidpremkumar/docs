@@ -1,0 +1,67 @@
+---
+title: 'Python Integrations'
+description: 'Lytix integrations with the following 3rd party tools'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix pip package
+
+
+```bash
+pip3 install lytix-py
+```
+
+*Make sure to set your API key e.g. `export LX_API_KEY=...`*
+
+## Helicone
+
+To integrate with Helicone, just wrap your calls with our wrapper. For example if **you start with** this code:
+
+
+```py
+from openai import OpenAI
+import os
+
+openAIClient = OpenAI(
+    api_key=os.environ.get(
+        "OPENAI_API_KEY", "sk-1234"
+    ),
+    base_url="https://oai.hconeai.com/v1",  # Helicone API endpoint
+    default_headers= { 
+        "Helicone-Auth": f"Bearer 5678",  # Helicone auth
+    }
+)
+
+...
+response = openAIClient.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "What is the capital of France?"},
+    ],
+    max_tokens=50
+)
+print(response.choices[0].message.content)
+```
+
+You just need to wrap your calls with our decorator and you're all set!
+
+```py
+@lytix.trace
+def askQuestion(input: str) -> str:
+  response = openAIClient.chat.completions.create(
+      model="gpt-3.5-turbo",
+      messages=[
+          {"role": "system", "content": "You are a helpful assistant."},
+          {"role": "user", "content": input},
+      ],
+      max_tokens=50
+  )
+  return response.choices[0].message.content
+
+print(askQuestion("What is the capital of France?"))
+```
+

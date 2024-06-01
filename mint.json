@@ -33,6 +33,10 @@
         "python-quickstart",
         "posthog-integration"
       ]
+    },
+    {
+      "group": "Python",
+      "pages": ["Python/python-integrations"]
     }
   ],
   "footerSocials": {
