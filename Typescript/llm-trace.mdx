@@ -1,0 +1,69 @@
+---
+title: 'LLM Trace'
+description: 'How to trace the duration of your LLM interactions'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix NPM package
+
+<CodeGroup>
+
+```bash npm
+npm i @lytix/client
+```
+
+```bash yarn
+yarn add @lytix/client
+```
+
+</CodeGroup>
+
+## LLM Model Input Output Collection
+
+Lytix supports automatically collecting the input and output of LLM models. To do this you can use the following
+
+```ts
+import { MetricCollector } from "@lytix/client";
+
+await MetricCollector.captureModelIO({
+  modelName: "testModelName",
+  modelInput: "Some user input",
+  modelOutput: "Some model output",
+  metricMetadata: {
+    /**
+     * Optional extra data
+     */
+    env: "prod",
+  }
+);
+```
+
+Lytix will automatically process the input and output of the LLM model and push the metrics to the Lytix platform. You can see your model metrics in the Lytix platform [here](https://lytix.co/home/llm/).
+
+### LLM Model Trace Collection
+
+Lytix also support capturing trace information (e.g. duration) for the LLM model. To do this you can use the following
+
+```ts
+import { MetricCollector } from "@lytix/client";
+
+const response = await MetricCollector.captureModelTrace({
+  modelName: "testModelName",
+  modelInput: "Some user input",
+  generateModelOutput: async () => {
+    const openai = new OpenAI();
+    ...
+    /**
+     * This callback is expecting the model output to be returned
+     */
+    return response;
+  }
+});
+```
+
+You'll now see the model duration trace in the Lytix platform [here](https://lytix.co/home/llm/).
+
+![title](/images/node-quickstart/modelDurationTrace.png)

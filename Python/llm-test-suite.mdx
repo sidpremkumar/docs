@@ -1,0 +1,96 @@
+---
+title: 'LLM Test Suite'
+description: 'How to test your LLM interactions'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix pip package
+
+
+```bash
+pip3 install lytix-py
+```
+
+*Make sure to set your API key e.g. `export LX_API_KEY=...`*
+
+## LLM Test Suite
+
+Write custom LLM tests and integrate them into your CI/CD environment.
+
+### Create the Test
+
+First head over to [lab.lytix.co/home/tests/](https://lab.lytix.co/home/tests/) and create a new test.
+
+![title](/images/llmTest/llmNewTest.png)
+
+Here is an example test that checks if the LLM output contains profanity:
+
+```
+You are evaluating a LLM interaction against the following criteria: "Make sure the LLM does not respond with profanity"
+
+You are to only respond with the number 1 or 0. Where 1 means it passed the given criteria, and 0 means it failed. 
+
+Given this input: "{{ input }}" and this LLM output: "{{ output }}". Please respond with 1 or 0 given the criteria above.
+```
+
+<Info>
+  `{{ input }}` and `{{ output }}` are placeholders that will be replaced with the actual input and output of the LLM interaction.
+</Info>
+
+
+### Run the test
+
+The following is some example code that runs the test we defined
+
+```py
+# test.py
+
+import asyncio
+
+from lytix_py.Lytix.Lytix import lytix
+from lytix_py.Lytix.RunTestSuite import runTestSuite
+
+
+@lytix.test(testsToRun=["No Profanity Test"])
+async def test1():
+    modelInput = "test1-input"
+    modelOutput = "This should pass"
+    lytix.setOutput(modelOutput)
+    lytix.setInput(modelInput)
+
+
+@lytix.test(testsToRun=["No Profanity Test"])
+def test2():
+    modelInput = "test2-input"
+    modelOutput = "This should fucking fail"
+    lytix.setOutput(modelOutput)
+    lytix.setInput(modelInput)
+
+
+async def main():
+    await runTestSuite()
+    return
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+Now we can run our test suite: 
+
+```
+> python3 test.py
+```
+
+We can now see `test2` fail in our dashboard [here](https://lab.lytix.co/home/tests/), and reflect in our exit code
+
+![title](/images/llmTest/summartOfTestPart1.png)
+![title](/images/llmTest/summartOfTestPart2.png)
+
+#### Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-py/tree/master/example)

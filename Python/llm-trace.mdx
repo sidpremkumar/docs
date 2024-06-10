@@ -1,0 +1,66 @@
+---
+title: 'LLM Trace'
+description: 'How to trace the duration of your LLM interactions'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix pip package
+
+
+```bash
+pip3 install lytix-py
+```
+
+*Make sure to set your API key e.g. `export LX_API_KEY=...`*
+
+## Capture Model Trace
+
+Lytix also support capturing trace information (e.g. duration) for the LLM model. To do this you can use the following
+
+```py
+import asyncio
+from lytix_py.Lytix.Lytix import lytix
+
+
+userInput = "Whats the capital of France?"
+
+"""
+The function to be traced
+"""
+
+
+@lytix.trace(modelName="testModelName")
+async def getResponse(logger):
+    modelOutput = "Paris is the capital of france"
+
+    # Set our defined params however we want
+    lytix.setInput(userInput)
+    lytix.setOutput(modelOutput)
+
+    # Optional values
+    lytix.setUserIdentifier("testUser")
+    lytix.setSessionId("testSession")
+
+    return modelOutput
+
+
+async def main():
+    response = await getResponse("What is the capital of France?")
+    print(response)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+You'll now see the model duration trace in the Lytix platform [here](https://lytix.co/home/llm/).
+
+![title](/images/node-quickstart/modelDurationTrace.png)
+
+#### Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-py/tree/master/example)

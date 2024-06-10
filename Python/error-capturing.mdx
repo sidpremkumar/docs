@@ -1,0 +1,114 @@
+---
+title: 'Error Capturing'
+description: 'How to capture errors in your code'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix pip package
+
+
+```bash
+pip3 install lytix-py
+```
+
+*Make sure to set your API key e.g. `export LX_API_KEY=...`*
+
+#### Error Class
+
+You can now just replace all your `raise Exception` calls with `raise LError`. For example: 
+
+```py
+from lytix_py import LError
+from lytix_py.LLogger.LLogger import LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some process is starting")
+    raise LError("An unexpected error")
+
+async def main(): 
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+
+The error, along with the last 20 log lines will automatically get pushed to the Lytix platform [here](https://lab.lytix.co/home/errors)
+
+![title](/images/node-quickstart/LErrorExample.png)
+
+#### Error Increment
+
+You can also send an error along with related logs without throwing an error by using the `increment` method. 
+
+```py
+from lytix_py.LError import LErrorIncrement
+from lytix_py.LLogger.LLogger import LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some context on the user here")
+    try:
+        raise Exception("LIncrement error happened")
+    except Exception as e:
+        logger.error("LIncrement error happened")
+        LErrorIncrement("Some error")
+                        
+async def main(): 
+    logger = LLogger("main-logger")
+    logger.info("Starting in our main LIncrement process")
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+
+#### Fast API Integration
+
+Lytix also support capturing errors in FastAPI. To get started first hook up our Lytix middleware:
+
+```py
+from lytix_py.FastAPIMiddleware.LytixMiddleware import LytixMiddleware
+from fastapi import FastAPI
+
+...
+app = FastAPI()
+
+app.add_middleware(LytixMiddleware)
+...
+```
+
+Now you can throw errors in your FastAPI routes or subcalls as follows: 
+
+```py
+
+# main.py
+@app.get("/")
+async def read_root():
+    logger = LLogger("read-root")
+    logger.info('In the main view here...')
+    await backgroundFastAPIProcess()
+    return {"Hello": "World"}
+
+# backgroundProcess.py
+async def backgroundFastAPIProcess(): 
+    logger = LLogger("background-fast-api-process")
+    logger.info("In the background here")
+
+    """
+    All the logs associated with this request will get sent to lytix
+    """
+    raise LError("Some error")
+```
+
+
+#### Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-py/tree/master/example)

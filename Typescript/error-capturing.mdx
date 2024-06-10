@@ -1,0 +1,85 @@
+---
+title: 'Error Capturing'
+description: 'How to capture errors in your code'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix NPM package
+
+<CodeGroup>
+
+```bash npm
+npm i @lytix/client
+```
+
+```bash yarn
+yarn add @lytix/client
+```
+
+</CodeGroup>
+
+## Error Capturing
+
+#### Error Class
+
+You can now just replace all your `throw new Error` calls with `throw new LError`. For example: 
+
+```ts
+...
+app.get("/test", async (req, res) => {
+  const logger = new LLogger('testRoute');
+  /**
+   * Lets pretend an error happend
+   */
+  try {
+    logger.info("Some process is starting");
+    throw new LError("An unexpeted error", { env: "prod" });
+  } catch (err) {
+    logger.error("crazy unexpeted error with this user: 123", err);
+    res.sendStatus(500);
+    return;
+  }
+
+  /**
+   * Magically if we ended here, we'd reply with a 200
+   */
+  res.send("Hello World");
+});
+...
+```
+
+The error, along with the last 20 log lines will automatically get pushed to the lytix platform [here](https://lab.lytix.co/home/errors)
+
+![title](/images/node-quickstart/LErrorExample.png)
+
+#### Error Increment
+
+You can also send an error along with related logs without throwing an error by using the `increment` method. 
+
+```ts
+import { LErrorIncrement, LLogger } from "@lytix/client";
+
+/**
+ * An example background process
+ */
+const backgroundProcess = async () => {
+  const logger = new LLogger("backgroundProcessExample", { userId: "123" });
+  try {
+    logger.info("Background process started for user!");
+    throw new Error("Unexpected error!");
+  } catch (err) {
+    /**
+     * Just increment to get the logs as well as the error
+     */
+    logger.error(`Unexpected error happened`, err);
+    LErrorIncrement("Unexpected error");
+  }
+};
+```
+
+#### Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-js/tree/master/src/examples)

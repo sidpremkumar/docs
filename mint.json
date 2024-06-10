@@ -26,17 +26,19 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [
-        "introduction",
-        "api-key-setup",
-        "nodejs-quickstart",
-        "python-quickstart",
-        "posthog-integration"
-      ]
+      "pages": ["introduction", "api-key-setup", "posthog-integration"]
     },
     {
       "group": "Python",
-      "pages": ["Python/python-integrations"]
+      "pages": [
+        "Python/error-capturing",
+        "Python/llm-test-suite",
+        "Python/llm-trace"
+      ]
+    },
+    {
+      "group": "Typescript",
+      "pages": ["Typescript/error-capturing", "Typescript/llm-trace"]
     }
   ],
   "footerSocials": {
