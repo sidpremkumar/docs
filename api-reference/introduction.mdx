@@ -14,33 +14,3 @@ Feel free to use any REST client to use our SDK directly.
 ## Authentication
 
 All API endpoints are authenticated using the `lx-api-key` header.
-
-Python example:
-```py
-import requests
-
-headers = {
-  "Content-Type": "application/json",
-  "lx-api-key": "sk-...",
-}
-response = requests.post('https://api.lytix.co/...',
-  headers=headers,
-  json={...}
-)
-```
-
-Typescript example:
-
-```js
-
-const headers = {
-  "Content-Type": "application/json",
-  "lx-api-key": "sk-...",
-};
-const res = await fetch(url, {
-  method: "POST",
-  headers,
-  body: JSON.stringify(body),
-  credentials: "include",
-});
-```
