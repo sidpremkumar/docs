@@ -15,13 +15,19 @@
       "to": "#07C983"
     }
   },
+  "openapi": ["/api-reference/openapi.yml"],
   "topbarLinks": [
     {
       "name": "Support",
       "url": "mailto:support@lytix.co"
     }
   ],
-  "tabs": [],
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
   "anchors": [],
   "navigation": [
     {
@@ -39,6 +45,14 @@
     {
       "group": "Typescript",
       "pages": ["Typescript/error-capturing", "Typescript/llm-trace"]
+    },
+    {
+      "group": "API Documentation",
+      "pages": ["api-reference/introduction"]
+    },
+    {
+      "group": "Endpoint Examples",
+      "pages": ["api-reference/endpoint/post-modelio"]
     }
   ],
   "footerSocials": {
