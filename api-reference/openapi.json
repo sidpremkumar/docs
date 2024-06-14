@@ -23,54 +23,20 @@
       "post": {
         "operationId": "modelIO",
         "description": "Logs a new model IO event to the Lytix platform",
-        "parameters": [
-          {
-            "name": "modelName",
-            "in": "query",
-            "required": true,
-            "description": "Name of the identifier to use on the Lytix platform",
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "description": "Model IO event to log",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewModelIO"
+              }
             }
           },
-          {
-            "name": "modelInput",
-            "in": "query",
-            "required": true,
-            "description": "Input to the model",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "modelOutput",
-            "in": "query",
-            "required": true,
-            "description": "Output of the model",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "metricMetadata",
-            "in": "query",
-            "description": "Metadata to associate with the metric",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "name": "userIdentifier",
-            "in": "query",
-            "description": "User identifier to associate with io event",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Model IO response",
             "content": {}
           },
           "500": {
@@ -103,19 +69,35 @@
           }
         }
       },
-      "NewPlant": {
+      "NewModelIO": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": ["id"],
+            "required": ["modelName", "modelInput", "modelOutput"],
             "type": "object",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+              "modelName": {
+                "description": "Name of the identifier to use on the Lytix platform",
+                "type": "string"
+              },
+              "modelInput": {
+                "description": "Input to the model",
+                "type": "string"
+              },
+              "modelOutput": {
+                "description": "Output of the model",
+                "type": "string"
+              },
+              "metricMetadata": {
+                "description": "Metadata to associate with the metric",
+                "type": "object"
+              },
+              "userIdentifier": {
+                "description": "User identifier to associate with the IO event",
+                "type": "string"
+              },
+              "sessionId": {
+                "description": "Session Id to associate with the IO event",
+                "type": "string"
               }
             }
           }
