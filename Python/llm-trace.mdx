@@ -18,7 +18,7 @@ pip3 install lytix-py
 
 ## Capture Model Trace
 
-Lytix also support capturing trace information (e.g. duration) for the LLM model. To do this you can use the following
+Lytix also supports capturing trace information (e.g. duration) for the LLM model. To do this you can use the following
 
 ```py
 import asyncio
@@ -37,8 +37,8 @@ async def getResponse(logger):
     modelOutput = "Paris is the capital of france"
 
     # Set our defined params however we want
-    lytix.setInput(userInput)
-    lytix.setOutput(modelOutput)
+    lytix.setMessage(userInput, "user")
+    lytix.setMessage(modelOutput, "assistant")
 
     # Optional values
     lytix.setUserIdentifier("testUser")
