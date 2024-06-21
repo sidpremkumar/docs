@@ -48,7 +48,7 @@
     },
     {
       "group": "Integrations",
-      "pages": ["integrations/helicone", "integrations/posthog"]
+      "pages": ["integrations/helicone", "integrations/postHog"]
     },
     {
       "group": "API Documentation",
