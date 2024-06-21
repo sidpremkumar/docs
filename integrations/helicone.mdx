@@ -40,4 +40,44 @@ client = OpenAI(
 
 Then just use Helicone as normal and you'll see your events in your Lytix dashboard under the name of the model you use.
 
+
 ![title](/images/integrations/helicone-lytix-final.png)
+
+## User Identifier
+
+You can also add the `Helicone-User-Id` to get userId information in your Lytix dashboard. This is useful if you want to see how a specific user is using your models.
+
+<CodeGroup>
+```ts JavaScript Example
+import { Configuration, OpenAIApi } from "openai";
+
+const configuration = new Configuration({
+apiKey: process.env.OPENAI_API_KEY,
+basePath: "https://oai.helicone.ai/v1",
+baseOptions: {
+	headers: {
+		"Helicone-Auth": `Bearer $HELICONE_API_KEY`,
+		"Helicone-Lytix-Key": `$LYTIX_API_KEY`,
+        "Helicone-User-Id": `$USER_ID`, // Add this
+	},
+},
+});
+
+const openai = new OpenAIApi(configuration);
+```
+```py Python Example
+client = OpenAI(
+	api_key="<your-api-key-here>", # Replace with your OpenAI API key
+	base_url="https://oai.helicone.ai/v1" # Set the API endpoint
+	default_headers= {
+		"Helicone-Auth": f"Bearer $HELICONE_API_KEY",
+		"Helicone-Lytix-Key": "$LYTIX_API_KEY",
+        "Helicone-User-Id": "$USER_ID", # Add this
+	}
+)
+```
+</CodeGroup>
+
+You can now see the user identifier property in your Lytix dashboard.
+
+![title](/images/integrations/heli-user-id.png)
