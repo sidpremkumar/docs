@@ -32,7 +32,7 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "api-key-setup", "posthog-integration"]
+      "pages": ["introduction", "api-key-setup"]
     },
     {
       "group": "Python",
@@ -45,6 +45,10 @@
     {
       "group": "Typescript",
       "pages": ["Typescript/error-capturing", "Typescript/llm-trace"]
+    },
+    {
+      "group": "Integrations",
+      "pages": ["integrations/helicone", "integrations/posthog"]
     },
     {
       "group": "API Documentation",
