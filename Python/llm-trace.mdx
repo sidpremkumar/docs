@@ -1,20 +1,20 @@
 ---
-title: 'LLM Trace'
-description: 'How to trace the duration of your LLM interactions'
+title: "LLM Trace"
+description: "How to trace the duration of your LLM interactions"
 ---
 
 <Info>
-  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key
+  environment variable.
 </Info>
 
 Install the Lytix pip package
-
 
 ```bash
 pip3 install lytix-py
 ```
 
-*Make sure to set your API key e.g. `export LX_API_KEY=...`*
+_Make sure to set your API key e.g. `export LX_API_KEY=...`_
 
 ## Capture Model Trace
 
@@ -39,6 +39,9 @@ async def getResponse(logger):
     # Set our defined params however we want
     lytix.setMessage(userInput, "user")
     lytix.setMessage(modelOutput, "assistant")
+
+    # Set a system message
+    lytix.setMessage("You are a helpful assistant", "system")
 
     # Optional values
     lytix.setUserIdentifier("testUser")
