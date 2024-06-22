@@ -21,8 +21,7 @@ pip3 install lytix-py
 You can now just replace all your `raise Exception` calls with `raise LError`. For example: 
 
 ```py
-from lytix_py import LError
-from lytix_py.LLogger.LLogger import LLogger
+from lytix_py import LError, LLogger
 
 async def backgroundProcess():
     logger = LLogger("background-logger", {"userId": '124'})
@@ -47,8 +46,7 @@ The error, along with the last 20 log lines will automatically get pushed to the
 You can also send an error along with related logs without throwing an error by using the `increment` method. 
 
 ```py
-from lytix_py.LError import LErrorIncrement
-from lytix_py.LLogger.LLogger import LLogger
+from lytix_py.LError import LErrorIncrement, LLogger
 
 async def backgroundProcess():
     logger = LLogger("background-logger", {"userId": '124'})
