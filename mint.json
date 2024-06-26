@@ -35,6 +35,10 @@
       "pages": ["introduction", "api-key-setup"]
     },
     {
+      "group": "OptiModel",
+      "pages": ["OptiModel/getting-started"]
+    },
+    {
       "group": "Python",
       "pages": [
         "Python/error-capturing",

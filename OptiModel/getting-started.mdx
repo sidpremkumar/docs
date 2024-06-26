@@ -1,0 +1,82 @@
+---
+title: 'OptiModel'
+description: 'Use Lytix to manage and call your models'
+---
+
+
+Using lytix to manage your OptiModel server is as simple as creating a lytix API key. 
+
+## Create a lytix API Key
+
+Start by creating and noting down a lytix api key. See instructions [here](/api-key-setup)
+
+## Add a new Provider
+
+Before you can start making LLMs calls, you'll first need to setup a new provider [here](https://lab.lytix.co/home/settings/model-providers)
+
+![add new provider to lytix](/images/optimodel/setting-manage-providers.png)
+
+
+<Info>
+  **Note** Access to models is limited to what providers you have setup. For example, if you only setup OpenAI, you will not be able to call llama3 models.
+</Info>
+
+## Call The SDK
+
+Now you are ready to make your first call by passing in the `LX_API_KEY` environment variable. 
+
+<CodeGroup>
+```py Python Example
+prompt = "Hello How are you?"
+
+response = await queryModel(
+    model=ModelTypes.llama_3_8b_instruct,
+    messages=[
+        ModelMessage(
+            role="system",
+            content="You are a helpful assistant. Always respond in JSON syntax",
+        ),
+        ModelMessage(role="user", content=prompt),
+    ],
+)
+print("Got response:", response)
+```
+
+
+</CodeGroup>
+
+Just remember to pass your `LX_API_KEY` when starting your program as an environment variable.
+
+```sh
+> LX_API_KEY=<your-api-key-here> python3 your_script.py
+```
+
+
+## Extra Parameters
+
+The following extra parameters are available to pass to the `queryModel` function:
+
+`speedPriority`: This can be used to control how OptiModel should prioritize the request. If set to `high` it will not focus on cost
+```py
+speedPriority = "low" | "high"
+```
+
+
+`validator`: This is a function that will be used to validate the response. If the validator returns `False` the request will be retried. _Note:_ You must pass `fallbackModels` if you use a validator.
+```py
+validator = Callable[[str], bool]
+```
+
+`fallbackModels`: This a list of other models to fallback to if the first model fails the validator.
+
+```py
+fallbackModels = List[ModelTypes]
+```
+
+`maxGenLen`: This is the maximum length of the response, if the model response is longer than this, it will be truncated. This will check against the contig, so for example if you pass a value of 1 million, and no provider will be able to generate a response of that length, the request will fail. 
+
+```py
+maxGenLen = int
+```
+
+
