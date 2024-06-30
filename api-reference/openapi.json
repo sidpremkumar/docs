@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://api.lytix.co/v1/metrics"
+      "url": "https://api.lytix.co/"
     }
   ],
   "security": [
@@ -19,7 +19,7 @@
     }
   ],
   "paths": {
-    "/modelIO": {
+    "/v1/metrics/modelIO": {
       "post": {
         "operationId": "modelIO",
         "description": "Logs a new model IO event to the Lytix platform",
@@ -38,6 +38,45 @@
           "200": {
             "description": "Model IO response",
             "content": {}
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/beta/api/v1/evaluateBot": {
+      "post": {
+        "operationId": "evaluateBot",
+        "description": "Evaluates a conversation based on a set of known criteria see [here](https://gist.github.com/sidpremkumar/6341db4130ba6fd497076da700163909) for a full example of the expected input and output",
+        "requestBody": {
+          "description": "Conversation to evaluate",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BotEvalBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Model IO response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BotEvalResponse"
+                }
+              }
+            }
           },
           "500": {
             "description": "Unexpected error",
@@ -98,6 +137,103 @@
               "sessionId": {
                 "description": "Session Id to associate with the IO event",
                 "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "BotEvalBody": {
+        "allOf": [
+          {
+            "required": ["conversation", "context"],
+            "type": "object",
+            "properties": {
+              "conversation": {
+                "description": "Name of the identifier to use on the Lytix platform",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "description": "Role of the message (e.g. user, bot)"
+                    },
+                    "content": {
+                      "type": "string",
+                      "description": "Content of the message"
+                    }
+                  }
+                }
+              },
+              "context": {
+                "description": "Mapping between 'role' and ground truth context (e.g. the ground truth for the bot)",
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BotEvalResponse": {
+        "allOf": [
+          {
+            "required": ["finalGrade", "allGrades"],
+            "type": "object",
+            "properties": {
+              "finalGrade": {
+                "description": "Map between 'role' and final grade on the conversation",
+                "type": "object",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Coherency": {
+                      "type": "object",
+                      "properties": {
+                        "grade": {
+                          "type": "string",
+                          "description": "Grade of the coherency of the response"
+                        },
+                        "explanation": {
+                          "type": "string",
+                          "description": "Explanation of the grade"
+                        }
+                      }
+                    },
+                    "AccurateToGroundTruth": {
+                      "properties": {
+                        "grade": {
+                          "type": "string",
+                          "description": "Grade of the accuracy of the response to the ground truth"
+                        },
+                        "explanation": {
+                          "type": "string",
+                          "description": "Explanation of the grade"
+                        }
+                      }
+                    },
+                    "Grammar": {
+                      "properties": {
+                        "grade": {
+                          "type": "string",
+                          "description": "Grade of the grammar of the response"
+                        },
+                        "explanation": {
+                          "type": "string",
+                          "description": "Explanation of the grade"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "allGrades": {
+                "description": "Mapping between 'role' and grade on individual messages",
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
               }
             }
           }

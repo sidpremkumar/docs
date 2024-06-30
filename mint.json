@@ -59,8 +59,12 @@
       "pages": ["api-reference/introduction"]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Model Metrics",
       "pages": ["api-reference/endpoint/post-modelio"]
+    },
+    {
+      "group": "🧨 Beta",
+      "pages": ["api-reference/endpoint/bot-eval"]
     }
   ],
   "footerSocials": {
