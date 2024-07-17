@@ -37,6 +37,9 @@ Now you are ready to make your first call by passing in the `LX_API_KEY` environ
 
 <CodeGroup>
 ```py Python Example
+from optimodel import queryModel, listModels
+from optimodel_server_types import ModelMessage, ModelTypes
+
 prompt = "Hello How are you?"
 
 response = await queryModel(
