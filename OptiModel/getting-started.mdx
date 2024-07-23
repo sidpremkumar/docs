@@ -27,9 +27,16 @@ Before you can start making LLMs calls, you'll first need to setup a new provide
 
 ## Install the SDK
 
-```sh
+<CodeGroup>
+```sh Python
 pip3 install optimodel-py
 ```
+
+```sh JavaScript
+npm i @lytix/client
+```
+</CodeGroup>
+
 
 ## Call The SDK
 
@@ -55,6 +62,42 @@ response = await queryModel(
 print("Got response:", response)
 ```
 
+```ts Typescript
+import { ModelTypes, SpeedPriority } from "@lytix/client";
+import { queryModel } from "@lytix/client";
+
+/**
+ * Simple validator to check if the response is JSON
+ */
+function validator(x: string): boolean {
+  try {
+    JSON.parse(x);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const main = async () => {
+  const prompt = "Hello How are you?";
+  const response = await queryModel({
+    model: ModelTypes.gpt_4o_mini,
+    messages: [
+      { role: "user", content: prompt },
+      { role: "assistant", content: "Always respond with a JSON object" },
+    ],
+    speedPriority: SpeedPriority.low,
+    temperature: 0.5,
+    fallbackModels: [ModelTypes.gpt_4o],
+    validator: validator,
+    maxGenLen: 256,
+  });
+  console.log(`Got response: ${response}`);
+};
+
+main();
+```
+
 
 </CodeGroup>
 
@@ -70,25 +113,49 @@ Just remember to pass your `LX_API_KEY` when starting your program as an environ
 The following extra parameters are available to pass to the `queryModel` function:
 
 `speedPriority`: This can be used to control how OptiModel should prioritize the request. If set to `high` it will not focus on cost
-```py
+<CodeGroup>
+```py Python
 speedPriority = "low" | "high"
 ```
 
+```ts Typescript
+speedPriority = "low" | "high";
+```
+</CodeGroup>
+
 
 `validator`: This is a function that will be used to validate the response. If the validator returns `False` the request will be retried. _Note:_ You must pass `fallbackModels` if you use a validator.
-```py
+<CodeGroup>
+```py Python
 validator = Callable[[str], bool]
 ```
 
+```ts Typescript
+validator = (response: string) => boolean;
+```
+</CodeGroup>
+
 `fallbackModels`: This a list of other models to fallback to if the first model fails the validator.
 
-```py
+<CodeGroup>
+```py Python
 fallbackModels = List[ModelTypes]
 ```
 
+```ts Typescript
+fallbackModels = ModelTypes[];
+```
+</CodeGroup>
+
 `maxGenLen`: This is the maximum length of the response, if the model response is longer than this, it will be truncated. This will check against the contig, so for example if you pass a value of 1 million, and no provider will be able to generate a response of that length, the request will fail. 
 
-```py
+<CodeGroup>
+
+```py Python
 maxGenLen = int
 ```
 
+```ts Typescript
+maxGenLen = number;
+```
+</CodeGroup>

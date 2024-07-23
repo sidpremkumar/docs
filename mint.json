@@ -60,7 +60,10 @@
     },
     {
       "group": "Model Metrics",
-      "pages": ["api-reference/endpoint/post-modelio"]
+      "pages": [
+        "api-reference/endpoint/post-modelio",
+        "api-reference/endpoint/post-optimodel"
+      ]
     },
     {
       "group": "🧨 Beta",

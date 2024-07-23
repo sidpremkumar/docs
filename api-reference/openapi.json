@@ -52,6 +52,39 @@
         }
       }
     },
+    "/optimodel/api/v1/query": {
+      "post": {
+        "operationId": "query",
+        "description": "Query [optimodel](https://github.com/Lytix-Labs/optimodel/tree/master) via the Lytix SAAS",
+        "requestBody": {
+          "description": "Optimodel request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OptimodelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Optimodel response",
+            "content": {}
+          },
+          "500": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/beta/api/v1/evaluateBot": {
       "post": {
         "operationId": "evaluateBot",
@@ -94,6 +127,60 @@
   },
   "components": {
     "schemas": {
+      "ModelImageMessageSource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "mediaType", "data"]
+      },
+      "ModelMessageContentEntry": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "$ref": "#/components/schemas/ModelImageMessageSource",
+            "nullable": true
+          }
+        },
+        "required": ["type"]
+      },
+      "ModelMessage": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "content": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ModelMessageContentEntry"
+                }
+              }
+            ]
+          }
+        },
+        "required": ["role", "content"]
+      },
       "Plant": {
         "required": ["name"],
         "type": "object",
@@ -137,6 +224,71 @@
               "sessionId": {
                 "description": "Session Id to associate with the IO event",
                 "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "OptimodelRequest": {
+        "allOf": [
+          {
+            "required": [
+              "modelToUse",
+              "speedPriority",
+              "temperature",
+              "maxGenerations"
+            ],
+            "type": "object",
+            "properties": {
+              "messages": {
+                "description": "Messages to use for the query",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "role": {
+                      "type": "string",
+                      "description": "Role of the message (e.g. user, bot)"
+                    },
+                    "content": {
+                      "$ref": "#/components/schemas/ModelMessage"
+                    }
+                  }
+                }
+              },
+              "modelToUse": {
+                "description": "Model to use for the query",
+                "type": "string",
+                "enum": [
+                  "llama_3_8b_instruct",
+                  "llama_3_70b_instruct",
+                  "llama_3_1_405b",
+                  "llama_3_1_70b",
+                  "llama_3_1_8b",
+                  "claude_3_5_sonnet",
+                  "claude_3_haiku",
+                  "mistral_7b_instruct",
+                  "mixtral_8x7b_instruct",
+                  "gpt_4",
+                  "gpt_3_5_turbo",
+                  "gpt_4o",
+                  "gpt_4_turbo",
+                  "gpt_3_5_turbo_0125",
+                  "gpt_4o_mini"
+                ]
+              },
+              "speedPriority": {
+                "description": "Speed priority of the query (low or high)",
+                "type": "string",
+                "enum": ["low", "high"]
+              },
+              "temperature": {
+                "description": "Temperature of the query",
+                "type": "number"
+              },
+              "maxGenerations": {
+                "description": "Max generations of the query",
+                "type": "number"
               }
             }
           }
