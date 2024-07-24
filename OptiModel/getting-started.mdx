@@ -10,9 +10,31 @@ Using lytix to manage your [OptiModel](https://github.com/Lytix-Labs/optimodel/t
   **Prerequisite** First create a lytix account [here](https://lab.lytix.co/home/login)
 </Info>
 
-## Create a lytix API Key
+## Create a Lytix API Key
 
 Start by creating and noting down a lytix api key. See instructions [here](/api-key-setup)
+
+#### (Reccomended) Set you API key via the environment variable
+
+```sh
+export LX_API_KEY=<your-api-key-here>
+```
+
+#### Set your API key in the code
+
+<CodeGroup>
+```py Python
+from optimodel import LytixCreds
+
+LytixCreds.setAPIKey('<your-api-key-here>')
+```
+
+```ts Typescript
+import { LytixCred } from "@lytix/client";
+
+LytixCreds.setAPIKey("sk-1234");
+```
+</CodeGroup>
 
 ## Add a new Provider
 
