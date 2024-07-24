@@ -103,9 +103,18 @@ main();
 
 Just remember to pass your `LX_API_KEY` when starting your program as an environment variable.
 
-```sh
+<CodeGroup>
+```sh Python
 > LX_API_KEY=<your-api-key-here> python3 your_script.py
 ```
+
+```sh Typescript
+> LX_API_KEY=<your-api-key-here> node your_script.js
+```
+
+
+</CodeGroup>
+
 
 
 ## Extra Parameters
@@ -157,5 +166,29 @@ maxGenLen = int
 
 ```ts Typescript
 maxGenLen = number;
+```
+</CodeGroup>
+
+`jsonMode`: This will enable json mode for the request. This is useful if you want to pass in a json object as a prompt.
+
+<CodeGroup>
+```py Python
+jsonMode = bool
+```
+
+```ts Typescript
+jsonMode = boolean;
+```
+</CodeGroup>
+
+`provider`: You can optionally force a specific provder to be used. This is useful if you have multiple providers setup and want to force a specific one to be used.
+
+<CodeGroup>
+```py Python
+provider = "openai" | "groq" | "bedrock" | "anthropic" | "together"
+```
+
+```ts Typescript
+provider = "openai" | "groq" | "bedrock" | "anthropic" | "together";
 ```
 </CodeGroup>

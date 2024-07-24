@@ -232,12 +232,7 @@
       "OptimodelRequest": {
         "allOf": [
           {
-            "required": [
-              "modelToUse",
-              "speedPriority",
-              "temperature",
-              "maxGenerations"
-            ],
+            "required": ["modelToUse", "messages"],
             "type": "object",
             "properties": {
               "messages": {
@@ -286,9 +281,18 @@
                 "description": "Temperature of the query",
                 "type": "number"
               },
-              "maxGenerations": {
+              "maxGenLen": {
                 "description": "Max generations of the query",
                 "type": "number"
+              },
+              "jsonMode": {
+                "description": "Whether to use json mode",
+                "type": "boolean"
+              },
+              "provider": {
+                "description": "Provider to use for the query",
+                "type": "string",
+                "enum": ["openai", "groq", "bedrock", "anthropic", "together"]
               }
             }
           }
