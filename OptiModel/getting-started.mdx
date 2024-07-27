@@ -214,3 +214,27 @@ provider = "openai" | "groq" | "bedrock" | "anthropic" | "together"
 provider = "openai" | "groq" | "bedrock" | "anthropic" | "together";
 ```
 </CodeGroup>
+
+`userId`: You can optionally pass in a userId to track user requests across the Lytix platform. This is often a unique user identifier.
+
+<CodeGroup>
+```py Python
+userId = str
+```
+
+```ts Typescript
+userId = string;
+```
+</CodeGroup>
+
+`sessionId`: You can optionally pass in a sessionId to track sessions or workflows. Events with the same sessionId will be grouped together.
+
+<CodeGroup>
+```py Python
+sessionId = str
+```
+
+```ts Typescript
+sessionId = string;
+```
+</CodeGroup>
