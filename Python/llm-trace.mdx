@@ -42,6 +42,9 @@ async def getResponse(logger):
     # Set a system message
     lytix.setMessage("You are a helpful assistant", "system")
 
+    # Set the output
+    lytix.setMessage("Ouput of model", "assistant")
+
     # Optional values
     lytix.setUserIdentifier("testUser")
     lytix.setSessionId("testSession")
