@@ -40,11 +40,7 @@
     },
     {
       "group": "Python",
-      "pages": [
-        "Python/error-capturing",
-        "Python/llm-test-suite",
-        "Python/llm-trace"
-      ]
+      "pages": ["Python/error-capturing", "Python/llm-trace"]
     },
     {
       "group": "Typescript",
