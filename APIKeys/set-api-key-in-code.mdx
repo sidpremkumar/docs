@@ -1,0 +1,38 @@
+---
+title: "Setting API Key In Code"
+description: "How to set your API Key in your code directly"
+---
+
+This is **not** reccomended but you can explicilty set the API key in your code.
+
+In Javascript:
+
+```js
+import { LytixCreds, MetricCollector } from "@lytix/client";
+
+/**
+ * First set the API key
+ */
+LytixCreds.setAPIKey("sk-1234");
+
+/**
+ * Then you can use Lytix normally
+ */
+await MetricCollector.increment("testMetric");
+```
+
+In Python:
+
+```py
+from lytix_py import MetricCollector, LytixCreds
+
+"""
+First set the API key
+"""
+LytixCreds.setAPIKey("sk-1234")
+
+"""
+Then you can use Lytix normally
+"""
+MetricCollector.increment("testMetric");
+```

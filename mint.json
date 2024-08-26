@@ -32,7 +32,16 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "api-key-setup"]
+      "pages": ["introduction"]
+    },
+    {
+      "group": "API Keys",
+      "pages": [
+        "APIKeys/api-key-setup",
+        "APIKeys/set-api-key-in-code",
+        "APIKeys/env-var-setup",
+        "APIKeys/api-keys-and-workflows"
+      ]
     },
     {
       "group": "OptiModel",
@@ -45,6 +54,10 @@
     {
       "group": "Typescript",
       "pages": ["Typescript/error-capturing", "Typescript/llm-trace"]
+    },
+    {
+      "group": "Workflows",
+      "pages": ["Workflows/workflows-setup"]
     },
     {
       "group": "Integrations",

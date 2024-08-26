@@ -1,0 +1,39 @@
+---
+title: 'Workflow Setup'
+description: 'How to setup workflows'
+---
+
+![title](/images/apiKeysAndWorkflows/workflowExample.png)
+
+Workflows are ways to group and analyze your LLM data. Not all calls to a given model should be evaluated the same way, so workflows allow you to define different evaluation criteria for different models.
+
+In addition to high level metrics, workflows also allow you to define custom evaluation criteria that you can use to evaluate your LLM data. 
+
+
+### Setup A Workflow
+
+Workflows are created when data is first pushed and tagged with a given workflow name. There are two ways to create a workflow:
+
+1. Use an API key to automatically push data to a workflow. Learn more [here](/APIKeys/api-keys-and-workflows).
+
+2. Use [Optimodel](/OptiModel/getting-started) to push data to a workflow (see code below)
+
+
+```python
+response = await queryModel(
+    # Just set this field
+    workflowName="test-workflow", 
+    model=ModelTypes.llama_3_70b_instruct,
+    messages=[
+        ModelMessage(
+            role="system",
+            content="Always respond with a JSON object",
+        ),
+        ModelMessage(role="user", content=[
+            ModelMessageContentEntry(type="text", text="Hello how are you again?"),
+        ]),
+    ],
+)
+``` 
+
+3. [Coming soon] Use a native OpenAI or Anthropic model call
