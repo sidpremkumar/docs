@@ -57,7 +57,10 @@
     },
     {
       "group": "Workflows",
-      "pages": ["Workflows/workflows-setup"]
+      "pages": [
+        "Workflows/workflows-setup",
+        "Workflows/workflows-custom-evaluation"
+      ]
     },
     {
       "group": "Integrations",
