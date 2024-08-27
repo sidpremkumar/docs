@@ -1,0 +1,83 @@
+---
+title: 'OpenAI Integration'
+description: 'How to integrate OpenAI with Lytix'
+---
+
+
+Use Lytix to manage your evaluation and usage diretly with the OpenAI SDK.
+
+<Info>
+  **Prerequisite** First create a lytix account [here](https://lab.lytix.co/home/login)
+</Info>
+
+## Create a Lytix API Key
+
+Start by creating and noting down a lytix api key. See instructions [here](/api-key-setup)
+
+#### (Reccomended) Set you API key via the environment variable
+
+```sh
+export LX_API_KEY=<your-api-key-here>
+```
+
+#### Set your API key in the code
+
+<CodeGroup>
+```py Python
+from optimodel import LytixCreds
+
+LytixCreds.setAPIKey('<your-api-key-here>')
+```
+
+```ts Typescript
+import { LytixCred } from "@lytix/client";
+
+LytixCreds.setAPIKey("sk-1234");
+```
+</CodeGroup>
+
+## Update your OpenAI SDK
+
+With 1 line you can start using Lytix to manage your evaluation and usage.
+
+<CodeGroup>
+```py Python
+from openai import OpenAI
+
+client = OpenAI(
+  # Update your base url to the lytix proxy
+  base_url=f"https://api.lytix.co/proxy/v1/openai",
+  default_headers={
+    # Add your lytix api key
+    "lx-api-key": "API_KEY_HERE"
+  },
+)
+
+```
+
+</CodeGroup>
+
+## Optional Fields
+
+You can also track workflows, users and sessions to get a better understanding of your users and how they interact with your models.
+
+<CodeGroup>
+
+```py Python
+response = client.chat.completions.create(
+    model="gpt-4",
+    extra_headers={
+        # Add your sessionId to track sessions
+        "sessionId": "1234567890",
+        # Add your userId to track users
+        "userId": "sid@lytix.co",
+        # Add your workflowName to track workflows
+        "workflowName": "test-workflow",
+    },
+    messages=[
+       ...
+    ],
+)
+```
+
+</CodeGroup>

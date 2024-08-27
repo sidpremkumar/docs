@@ -44,8 +44,11 @@
       ]
     },
     {
-      "group": "OptiModel",
-      "pages": ["OptiModel/getting-started"]
+      "group": "Quickstart",
+      "pages": [
+        "Quickstart/optimodel-getting-started",
+        "Quickstart/openai-integration"
+      ]
     },
     {
       "group": "Python",
