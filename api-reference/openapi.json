@@ -88,7 +88,7 @@
     "/beta/api/v1/evaluateBot": {
       "post": {
         "operationId": "evaluateBot",
-        "description": "Evaluates a conversation based on a set of known criteria see [here](https://gist.github.com/sidpremkumar/6341db4130ba6fd497076da700163909) for a full example of the expected input and output",
+        "description": "Evaluates a conversation based on a set of known criteria see [here](/SessionEvaluation/session-evaluation-push-sessions) for a full example.",
         "requestBody": {
           "description": "Conversation to evaluate",
           "content": {
@@ -327,6 +327,14 @@
                 "additionalProperties": {
                   "type": "string"
                 }
+              },
+              "version": {
+                "description": "Version of the session to evaluate",
+                "type": "string"
+              },
+              "sessionId": {
+                "description": "Session Id to associate with the IO event",
+                "type": "string"
               }
             }
           }

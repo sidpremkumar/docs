@@ -1,0 +1,73 @@
+---
+title: 'Push Session Data'
+description: 'How to push session data to the platform'
+---
+
+We offer a REST API to push session data to the platform. You can find the full API spec [here](/api-reference/endpoint/bot-eval). But this can be used to quickly get started: 
+
+# Simple Session
+
+<img src="https://lytix-cdn.s3.amazonaws.com/documentationAssets/botEval/simpleMessage.gif" alt="Simple Session" height="300" />
+
+Let's say we have a simple conversation between a user and a bot. The bot has a ground truth context that we want to evaluate the bot on. The request would be formatted as follows:
+
+```sh
+curl --location 'https://api.lytix.co/beta/api/v1/evaluateBot' \
+--header 'lx-api-key: $LX_API_KEY' \
+--header 'Content-Type: application/json' \
+--data '{
+    "conversation": [
+        {
+            "role": "associate",
+            "content": "Good morning, this is Sarah calling from XYZ Company. Am I speaking with John?"
+        },
+        {
+            "role": "bot",
+            "content": "Yes, I am John. How can I help you today?"
+        },
+        ....
+    ],
+    "context": {
+         "bot": "Your name is John and you are not familiar with the content of what is being pitched. Your goal is to defer the conversation and get back to the sales rep at a later date. You do not have too much passion for the product"
+    }
+}'
+```
+
+
+# Tracking Versions
+
+<img src="https://lytix-cdn.s3.amazonaws.com/documentationAssets/botEval/viewByVersion.gif" alt="Tracking Versions" height="300" />
+
+We can also track versions of sessions over time. This can be helpful to track the performance of a different versions of sessions. 
+
+```sh
+curl --location 'https://api.lytix.co/beta/api/v1/evaluateBot' \
+--header 'lx-api-key: $LX_API_KEY' \
+--header 'Content-Type: application/json' \
+--data '{
+    ...the same as above...
+    "version": "v1.0.0"
+}'
+```
+
+# Grouping Sessions
+
+![title](https://lytix-cdn.s3.amazonaws.com/documentationAssets/botEval/groupingSessions.gif)
+
+You don't always want to use the same ground truth context for the duration of the conversation. For example, you may want to use a different context for different parts of the conversation. To do this, you can group sessions by passing in a `sessionId` parameter that you manage.
+
+
+```sh
+curl --location 'https://api.lytix.co/beta/api/v1/evaluateBot' \
+--header 'lx-api-key: $LX_API_KEY' \
+--header 'Content-Type: application/json' \
+--data '{
+    ...the same as above...
+    "sessionID": "1234567890"
+}'
+```
+
+<Info>
+Note: It is highly recommended to use a UUID for the sessionId to ensure uniqueness.
+</Info>
+

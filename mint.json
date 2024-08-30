@@ -66,6 +66,13 @@
       ]
     },
     {
+      "group": "Bot Evaluation",
+      "pages": [
+        "SessionEvaluation/session-evaluation-setup",
+        "SessionEvaluation/session-evaluation-push-sessions"
+      ]
+    },
+    {
       "group": "Integrations",
       "pages": ["integrations/helicone", "integrations/posthog"]
     },

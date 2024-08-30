@@ -14,28 +14,6 @@ Use Lytix to manage your evaluation and usage diretly with the OpenAI SDK.
 
 Start by creating and noting down a lytix api key. See instructions [here](/api-key-setup)
 
-#### (Reccomended) Set you API key via the environment variable
-
-```sh
-export LX_API_KEY=<your-api-key-here>
-```
-
-#### Set your API key in the code
-
-<CodeGroup>
-```py Python
-from optimodel import LytixCreds
-
-LytixCreds.setAPIKey('<your-api-key-here>')
-```
-
-```ts Typescript
-import { LytixCred } from "@lytix/client";
-
-LytixCreds.setAPIKey("sk-1234");
-```
-</CodeGroup>
-
 ## Update your OpenAI SDK
 
 With 1 line you can start using Lytix to manage your evaluation and usage.
