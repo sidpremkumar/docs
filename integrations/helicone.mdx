@@ -81,3 +81,39 @@ client = OpenAI(
 You can now see the user identifier property in your Lytix dashboard.
 
 ![title](/images/integrations/heli-user-id.png)
+
+## EU Servers
+
+If you are using the EU servers via Helicone. You will need to set the `Helicone-Lytix-Host` to `https://eu.api.lytix.co`.
+
+<CodeGroup>
+```ts JavaScript Example
+import { Configuration, OpenAIApi } from "openai";
+
+const configuration = new Configuration({
+apiKey: process.env.OPENAI_API_KEY,
+basePath: "https://oai.helicone.ai/v1",
+baseOptions: {
+	headers: {
+		"Helicone-Auth": `Bearer $HELICONE_API_KEY`,
+		"Helicone-Lytix-Key": `$LYTIX_API_KEY`,
+  		"Helicone-Lytix-Host": "https://eu.api.lytix.co", # Add this
+	},
+},
+});
+
+const openai = new OpenAIApi(configuration);
+```
+```py Python Example
+client = OpenAI(
+	api_key="<your-api-key-here>", # Replace with your OpenAI API key
+	base_url="https://oai.helicone.ai/v1" # Set the API endpoint
+	default_headers= {
+		"Helicone-Auth": f"Bearer $HELICONE_API_KEY",
+		"Helicone-Lytix-Key": "$LYTIX_API_KEY",
+        "Helicone-Lytix-Host": "https://eu.api.lytix.co", # Add this
+	}
+)
+```
+</CodeGroup>
+
