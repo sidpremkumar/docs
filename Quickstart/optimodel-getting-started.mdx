@@ -185,6 +185,99 @@ const creds: AWSBedrockCredentials = {
 ```
 </CodeGroup>
 
+**Open AI**
+
+
+<CodeGroup>
+
+```ts Python
+from optimodel_server_types import OpenAICredentials
+
+creds = OpenAICredentials(
+  openAiKey="$ANTHROPIC_API_KEY",
+)
+``` 
+
+```ts Typescript
+import { OpenAICredentials } from "@lytix/client";
+
+const creds: OpenAICredentials = {
+    openAiKey: "$ANTHROPIC_API_KEY",
+}
+```
+
+</CodeGroup>
+
+
+**Anthropic**
+
+<CodeGroup>
+
+```ts Python
+from optimodel_server_types import AnthropicCredentials
+
+creds = AnthropicCredentials(
+  anthropicApiKey="$ANTHROPIC_API_KEY",
+)
+``` 
+
+```ts Typescript
+import { AnthropicCredentials } from "@lytix/client";
+
+const creds: AnthropicCredentials = {
+    anthropicApiKey: "$ANTHROPIC_API_KEY",
+}
+```
+
+</CodeGroup>
+
+**TogetherAI**
+
+<CodeGroup>
+
+```ts Python
+from optimodel_server_types import TogetherAICredentials
+
+creds = TogetherAICredentials(
+  togetherApiKey="$TOGETHER_API_KEY",
+)
+```
+
+```ts Typescript
+import { TogetherAICredentials } from "@lytix/client";
+
+const creds: TogetherAICredentials = {
+    togetherApiKey: "$TOGETHER_API_KEY",
+}
+```
+
+</CodeGroup>
+
+**Groq**
+
+
+<CodeGroup>
+
+```ts Python
+from optimodel_server_types import GroqCredentials
+
+creds = GroqCredentials(
+  groqApiKey="$ANTHROPIC_API_KEY",
+)
+``` 
+
+```ts Typescript
+import { GroqCredentials } from "@lytix/client";
+
+const creds: GroqCredentials = {
+    groqApiKey: "$ANTHROPIC_API_KEY",
+}
+```
+
+</CodeGroup>
+
+
+
 ## Extra Parameters
 
 The following extra parameters are available to pass to the `queryModel` function:
