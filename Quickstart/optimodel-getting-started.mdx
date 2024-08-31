@@ -164,7 +164,7 @@ const response = await queryModel({
 
 Where each items in `credentials` can be any of the following
 
-**AWS Credentials**
+### **AWS Credentials**
 
 <CodeGroup>
 
@@ -189,7 +189,7 @@ const creds: AWSBedrockCredentials = {
 ```
 </CodeGroup>
 
-**Open AI**
+### **Open AI**
 
 
 <CodeGroup>
@@ -213,7 +213,7 @@ const creds: OpenAICredentials = {
 </CodeGroup>
 
 
-**Anthropic**
+### **Anthropic**
 
 <CodeGroup>
 
@@ -235,7 +235,7 @@ const creds: AnthropicCredentials = {
 
 </CodeGroup>
 
-**TogetherAI**
+### **TogetherAI**
 
 <CodeGroup>
 
@@ -257,7 +257,7 @@ const creds: TogetherAICredentials = {
 
 </CodeGroup>
 
-**Groq**
+### **Groq**
 
 
 <CodeGroup>
@@ -275,6 +275,29 @@ import { GroqCredentials } from "@lytix/client";
 
 const creds: GroqCredentials = {
     groqApiKey: "$ANTHROPIC_API_KEY",
+}
+```
+
+</CodeGroup>
+
+### **MistralAI**
+
+
+<CodeGroup>
+
+```ts Python
+from optimodel_server_types import MistralAICredentials
+
+creds = MistralAICredentials(
+  mistralApiKey="$MISTRAL_API_KEY",
+)
+``` 
+
+```ts Typescript
+import { MistralAICredentials } from "@lytix/client";
+
+const creds: MistralAICredentials = {
+    mistralApiKey: "$MISTRAL_API_KEY",
 }
 ```
 

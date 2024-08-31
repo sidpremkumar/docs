@@ -4,19 +4,21 @@ description: 'How to integrate OpenAI with Lytix'
 ---
 
 
-Use Lytix to manage your evaluation and usage diretly with the OpenAI SDK.
+Use Lytix to manage your evaluation and usage diretly with the OpenAI SDK. Gain access to models across providers and manage your usage and billing.
+
+# Quickstart
 
 <Info>
   **Prerequisite** First create a lytix account [here](https://lab.lytix.co/home/login)
 </Info>
 
-## Create a Lytix API Key
+### Create a Lytix API Key
 
 Start by creating and noting down a lytix api key. See instructions [here](/api-key-setup)
 
-## Update your OpenAI SDK
+### Update your OpenAI SDK
 
-With 1 line you can start using Lytix to manage your evaluation and usage.
+With 2 lines you can start using Lytix to manage your evaluation and usage.
 
 <CodeGroup>
 ```py Python
@@ -25,19 +27,44 @@ from openai import OpenAI
 client = OpenAI(
   # Update your base url to the lytix proxy
   base_url=f"https://api.lytix.co/proxy/v1/openai",
+  # Update your api key to the lytix api key
+  api_key="$LYTIX_API_KEY",
   default_headers={
-    # Add your lytix api key
-    "lx-api-key": "API_KEY_HERE"
+    # Move your openai key to the default headers
+    "openaiKey": "$OPENAI_API_KEY"
   },
 )
 
 ```
 
+```ts Typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  // Update your base url to the lytix proxy
+  baseURL: "https://api.lytix.co/proxy/v1/openai",
+  // Update your api key to the lytix api key
+  apiKey: '$LYTIX_API_KEY',
+  defaultHeaders: {
+    // Move your openai key to the default headers
+    openaiKey: '$OPENAI_API_KEY',
+  },
+});
+```
+
 </CodeGroup>
 
-## Optional Fields
+<Info>
+  **Note** You will need to use `https://eu.api.lytix.co/proxy/v1/openai` if you are in the EU region.
+</Info>
+
+#### Optional Fields
 
 You can also track workflows, users and sessions to get a better understanding of your users and how they interact with your models.
+
+- `sessionId`: A unique identifier for the session.
+- `userId`: A unique identifier for the user.
+- `workflowName`: A unique identifier for the workflow. If this workflow does not exist, it will be created and can be viewed [here](https://lab.lytix.co/home/workflows)
 
 <CodeGroup>
 
@@ -58,4 +85,118 @@ response = client.chat.completions.create(
 )
 ```
 
+```ts Typescript
+const response = await client.chat.completions.create(
+  {
+    messages: [{ role: "user", content: "Say this is a test" }],
+    model: "gpt-4",
+  },
+  {
+    headers: {
+      // Add your sessionId to track sessions
+      "sessionId": "1234567890",
+      // Add your userId to track users
+      "userId": "sid@lytix.co",
+      // Add your workflowName to track workflows
+      "workflowName": "test-workflow",
+    },
+  }
+);
+```
+
 </CodeGroup>
+
+# Using Other Models
+
+Beyond the models available on the OpenAI API, Lytix also supports a range of other models from different providers. Just add the credentials for the model/provider and you can start using them immediately.
+
+
+
+<CodeGroup>
+```sh Python
+pip3 install optimodel-py
+```
+
+```sh JavaScript
+npm i @lytix/client
+```
+</CodeGroup>
+
+Then just update our `model` field to the model you want to use.
+
+<CodeGroup>
+```py Python
+from optimodel_server_types import ModelTypes
+from openai import OpenAI
+
+client = OpenAI(
+  base_url="https://api.lytix.co/proxy/v1/openai",
+  api_key="$LYTIX_API_KEY",
+  default_headers={
+    # Add your lytix api key
+    "openaiKey": "$OPENAI_API_KEY",
+    # Add any extra credentials for the providers you want to use
+    "mistralApiKey": "$MISTRAL_API_KEY"
+  },
+)
+
+response = client.chat.completions.create(
+  # Specify the model you want to use from the ModelTypes enum (Remember to use the .name attribute)
+  model=ModelTypes.codestral_latest.name,
+  messages=[
+    {"role": "user", "content": "Say this is a test"}
+  ]
+)
+
+```
+
+```ts Typescript
+import { ModelTypes } from "@lytix/client";
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "https://api.lytix.co/proxy/v1/openai",
+  apiKey: "$LYTIX_API_KEY",
+  defaultHeaders: {
+    openaiKey: "$OPENAI_API_KEY",
+    // Add any extra credentials for the providers you want to use
+    mistralApiKey: "$MISTRAL_API_KEY",
+  },
+});
+
+
+const response = await client.chat.completions.create(
+  {
+    messages: [{ role: "user", content: "Say this is a test" }],
+    // Specify the model you want to use from the ModelTypes enum
+    model: ModelTypes.codestral_latest,
+  }
+);
+```
+
+</CodeGroup>
+
+
+### Passing in Credentials
+
+To pass in credentials for a provider, you can add the credentials to the headers. The following is a list of credentils you can pass in:
+
+- `mistralApiKey`: The API key for the Mistral model.
+- `openaiKey`: The API key for the OpenAI model.
+- `anthropicApiKey`: The API key for the Anthropic model.
+- `groqApiKey`: The API key for the Groq model.
+- `togetherApiKey`: The API key for the Together model.
+
+**Bedrock** To run models via bedrock, 3 headers are required:
+
+- `awsAccessKeyId`: The access key for the AWS account.
+- `awsSecretKey`: The secret access key for the AWS account.
+- `awsRegion`: The session token for the AWS account.
+
+
+### Supported Models & Providers
+
+![title](/images/openaiIntegration/availableModels.png)
+
+You can see the list of up to date models and providers [here](https://lab.lytix.co/home/settings/model-providers/) and clicking "Available Models".
+
