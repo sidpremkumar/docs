@@ -137,7 +137,53 @@ Just remember to pass your `LX_API_KEY` when starting your program as an environ
 
 </CodeGroup>
 
+## Using Local Credentials
 
+If you want to use local credentials, you can do so by passing in an array of `credentials` to the `queryModel` function.
+
+<CodeGroup>
+
+```ts Python
+response = await queryModel(
+    ...the same parameters as above
+    credentials: [creds],
+)
+```
+
+```ts Typescript
+const response = await queryModel({
+    ...the same parameters as above
+    credentials: [creds],
+  });
+```
+</CodeGroup>
+
+Where each items in `credentials` can be any of the following
+
+**AWS Credentials**
+
+<CodeGroup>
+
+```ts Python
+from optimodel_server_types import AWSBedrockCredentials
+
+creds = AWSBedrockCredentials(
+  awsAccessKeyId="$AWS_ACCESS_KEY_ID",
+  awsSecretKey="$AWS_SECRET_KEY",
+  awsRegion="$AWS_REGION",
+)
+```
+
+```ts Typescript
+import { AWSBedrockCredentials } from "@lytix/client";
+
+const creds: AWSBedrockCredentials = {
+    awsAccessKeyId: "$AWS_ACCESS_KEY_ID",
+    awsSecretKey: "$AWS_SECRET_KEY",
+    awsRegion: "$AWS_REGION",
+}
+```
+</CodeGroup>
 
 ## Extra Parameters
 
