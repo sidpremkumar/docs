@@ -1,0 +1,221 @@
+---
+title: 'Caching Setup'
+description: 'How to setup caching in your project'
+---
+
+Lytix support BYOC (Bring Your Own Cache) for Postgres. This allows you to own your cache data and query it independently of Lytix.
+
+# Integrations
+
+Click below on the integration you'd like to use. 
+
+### 💽 Supabase
+
+You can use a Supabase Postgres database as your cache store. Follow the steps below to get started.
+
+#### 1) Enable `pg_cron` Extension
+
+First we have to enagble the `pg_cron` extension for our database. Follow instructions outlined [here](https://supabase.com/docs/guides/database/extensions/pg_cron).
+
+#### 2) Get Your Database URL
+
+You can get your database URL by following these instructions [here](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler). To summarize: 
+1. Navigate to your project in the Supabase console
+2. Click on the `Settings` action
+3. Click `Database`
+4. Copy the 'Connection String' value. **Remember to add your password here!**
+
+
+And you're all setup getting a new Postgres database.
+
+### 🐳 Docker
+
+You can also build and host a PSQL docker container to host your cache database. We've already created a `Dockerfile` for you to get started that includes the `pg_cron` extension.
+
+#### 1) Copy the Repository
+
+First copy the [repository](https://github.com/Lytix-Labs/Lytix-Docker-Cache) from Github.
+
+```bash
+git clone git@github.com:Lytix-Labs/Lytix-Docker-Cache.git
+```
+
+#### 2) Build the Docker Image
+
+```bash
+> docker build -t psql-cache-db .
+```
+
+#### 3) Run the Docker Container
+
+```bash
+> docker run -d \
+  --name postgres \
+  -v pgdata-cache-1:/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=strongpassword \
+  -p 5432:5432 \
+   lytix-cache-psql
+```
+
+#### 4) Host the Docker Container
+
+You can now host the docker container on a cloud service like AWS, GCP or Azure. After getting a database URL you can follow the steps below to provision the database.
+
+
+
+# Provision The Postgres Database
+
+
+### Provision script
+
+<Info>
+  **Prerequisite** You will need to download [this](https://github.com/Lytix-Labs/Lytix-Docker-Cache/blob/master/databaset-setup.sh) shell script.
+</Info>
+We now can use [this](https://github.com/Lytix-Labs/Lytix-Docker-Cache/blob/master/databaset-setup.sh) shell script to provision a new Postgres database along with setting up our cron job logic.
+
+```bash
+> export DATABASE_URL=$YOUR_DATABASE_URL
+> ./databaset-setup.sh $DATABASE_URL
+Creating cache table...
+CREATE TABLE
+Cache table created successfully.
+Creating cache index...
+CREATE INDEX
+Cache index created successfully.
+Creating cache expiration procedure...
+CREATE PROCEDURE
+CALL
+Cache expiration procedure created successfully.
+Creating cache expiration cron job...
+ schedule
+----------
+        1
+(1 row)
+
+Cache expiration cron job created successfully.
+Showing cache expiration cron job...
+ jobid | schedule  |       command       | nodename  | nodeport | database | username | active | jobname
+-------+-----------+---------------------+-----------+----------+----------+----------+--------+---------
+     1 | * * * * * | CALL expire_rows(); | localhost |     5432 | postgres | postgres | t      |
+(1 row)
+
+Cache expiration cron job shown successfully.
+All done! 🚀. Your PSQL cache has been setup!
+
+```
+
+### Set your Cache Database URL
+
+You can now upload your cache database URL on the Lytix UI [here](https://lab.lytix.co/settings/cache) (or [here](https://eu.lab.lytix.co/settings/cache) for 🇪🇺).
+
+And you're all set up! 🎉
+
+{/* # Docker */}
+{/* 
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+Install the Lytix pip package
+
+
+```bash
+pip3 install lytix-py
+```
+
+*Make sure to set your API key e.g. `export LX_API_KEY=...`*
+
+#### Error Class
+
+You can now just replace all your `raise Exception` calls with `raise LError`. For example: 
+
+```py
+from lytix_py import LError, LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some process is starting")
+    raise LError("An unexpected error")
+
+async def main(): 
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+
+The error, along with the last 20 log lines will automatically get pushed to the Lytix platform [here](https://lab.lytix.co/home/errors)
+
+![title](/images/node-quickstart/LErrorExample.png)
+
+#### Error Increment
+
+You can also send an error along with related logs without throwing an error by using the `increment` method. 
+
+```py
+from lytix_py.LError import LErrorIncrement, LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some context on the user here")
+    try:
+        raise Exception("LIncrement error happened")
+    except Exception as e:
+        logger.error("LIncrement error happened")
+        LErrorIncrement("Some error")
+                        
+async def main(): 
+    logger = LLogger("main-logger")
+    logger.info("Starting in our main LIncrement process")
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+
+#### Fast API Integration
+
+Lytix also supports capturing errors in FastAPI. To get started first hook up our Lytix middleware:
+
+```py
+from lytix_py.FastAPIMiddleware.LytixMiddleware import LytixMiddleware
+from fastapi import FastAPI
+
+...
+app = FastAPI()
+
+app.add_middleware(LytixMiddleware)
+...
+```
+
+Now you can throw errors in your FastAPI routes or subcalls as follows: 
+
+```py
+
+# main.py
+@app.get("/")
+async def read_root():
+    logger = LLogger("read-root")
+    logger.info('In the main view here...')
+    await backgroundFastAPIProcess()
+    return {"Hello": "World"}
+
+# backgroundProcess.py
+async def backgroundFastAPIProcess(): 
+    logger = LLogger("background-fast-api-process")
+    logger.info("In the background here")
+
+    """
+    All the logs associated with this request will get sent to lytix
+    """
+    raise LError("Some error")
+```
+
+
+#### Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-py/tree/master/example) */}

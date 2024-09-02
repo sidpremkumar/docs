@@ -1,0 +1,101 @@
+---
+title: 'Using Caching'
+description: 'How to use caching in your project'
+---
+
+
+
+After setting up your caching DB, you are ready to start caching your queries. Depending on what client you are using, the process is the same.
+
+# Optimodel 
+
+<Info>
+  **Prerequisite** Please see [here](/Quickstart/optimodel-getting-started) to learn more about how to use Optimodel with Lytix.
+</Info>
+
+To set a TTL for your query, just pass the extra `cacheTTL` parameter. This is a value in seconds
+
+<CodeGroup>
+```py Python Example
+from optimodel import queryModel, listModels
+from optimodel_server_types import ModelMessage, ModelTypes
+
+prompt = "Hello How are you?"
+
+response = await queryModel(
+    ...All the same params
+    # Just add this extra param
+    cacheTTL=60*1 # 1 minute
+)
+print("Got response:", response)
+```
+
+```ts Typescript
+import { ModelTypes, SpeedPriority } from "@lytix/client";
+import { queryModel } from "@lytix/client";
+
+
+const main = async () => {
+  const prompt = "Hello How are you?";
+  const response = await queryModel({
+    ...All the same params
+    // Just add this extra param
+    cacheTTL=60*1 # 1 minute
+  });
+  console.log(`Got response: ${response}`);
+};
+
+main();
+```
+
+
+</CodeGroup>
+
+
+# OpenAI Client
+
+
+<Info>
+  **Prerequisite** Please see [here](/Quickstart/openai-integration) to learn more about how to use OpenAI with Lytix.
+</Info>
+
+While using the OpenAI client, you can pass an extra `cacheTTL` header when making your request. This is a value in seconds. 
+
+<CodeGroup>
+```py Python
+from openai import OpenAI
+
+client = OpenAI(
+  base_url=f"https://api.lytix.co/proxy/v1/openai",
+  api_key="$LYTIX_API_KEY",
+  default_headers={
+    "openaiKey": "$OPENAI_API_KEY",
+    # Add the cacheTTL header
+    "cacheTTL": "60 * 1" # 1 minute
+  },
+)
+
+```
+
+```ts Typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  baseURL: "https://api.lytix.co/proxy/v1/openai",
+  apiKey: '$LYTIX_API_KEY',
+  defaultHeaders: {
+    openaiKey: '$OPENAI_API_KEY',
+    // Add the cacheTTL header
+    "cacheTTL": "60 * 1" // 1 minute
+  },
+});
+```
+
+</CodeGroup>
+
+
+# Viewing Cache Hits
+
+You can view the cache hits on the Lytix dashboard [here](https://lab.lytix.co/home/cache)
+
+![title](/images/cache-example.png)

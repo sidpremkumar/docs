@@ -66,6 +66,10 @@
       ]
     },
     {
+      "group": "Caching",
+      "pages": ["Caching/caching-setup", "Caching/using-caching"]
+    },
+    {
       "group": "Bot Evaluation",
       "pages": [
         "SessionEvaluation/session-evaluation-setup",
