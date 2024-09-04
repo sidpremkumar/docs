@@ -47,7 +47,8 @@
       "group": "Quickstart",
       "pages": [
         "Quickstart/optimodel-getting-started",
-        "Quickstart/openai-integration"
+        "Quickstart/openai-integration",
+        "Quickstart/gemini-integration"
       ]
     },
     {
