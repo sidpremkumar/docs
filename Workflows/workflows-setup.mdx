@@ -79,4 +79,19 @@ response = client.chat.completions.create(
     }
 )
 ``` 
+
+```js Typescript
+const response = await client.chat.completions.create(
+  {
+    messages: [{ role: "user", content: "Hello world" }],
+    model: "gpt-4",
+  },
+  {
+    headers: {
+      // Add your workflowName to track workflows
+      "workflowName": "test-workflow",
+    },
+  }
+);
+```
 </CodeGroup>
