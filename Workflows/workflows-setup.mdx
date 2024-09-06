@@ -10,16 +10,22 @@ Workflows are ways to group and analyze your LLM data. Not all calls to a given 
 In addition to high level metrics, workflows also allow you to define custom evaluation criteria that you can use to evaluate your LLM data. 
 
 
-### Setup A Workflow
+# Setup A Workflow
 
 Workflows are created when data is first pushed and tagged with a given workflow name. There are two ways to create a workflow:
 
-1. Use an API key to automatically push data to a workflow. Learn more [here](/APIKeys/api-keys-and-workflows).
+#### Use an API Key
 
-2. Use [Optimodel](/OptiModel/getting-started) to push data to a workflow (see code below)
+Use an API key to automatically push data to a workflow. Learn more [here](/APIKeys/api-keys-and-workflows).
 
+#### Use [Optimodel](/OptiModel/getting-started) to push data to a workflow (see code below)
 
-```python
+<CodeGroup>
+
+```py Python
+from optimodel import queryModel
+from optimodel_server_types import ModelTypes, ModelMessage, ModelMessageContentEntry
+
 response = await queryModel(
     # Just set this field
     workflowName="test-workflow", 
@@ -36,4 +42,41 @@ response = await queryModel(
 )
 ``` 
 
-3. [Coming soon] Use a native OpenAI or Anthropic model call
+```py Typescript
+import { queryModel, ModelTypes } from "@lytix/client";
+
+const main = async () => {
+  const prompt = "Hello How are you?";
+  const response = await queryModel({
+    model: ModelTypes.gpt_4o_mini,
+    messages: [
+      { role: "user", content: prompt },
+      { role: "system", content: "Always respond with a JSON object" },
+    ],
+    workflowName="test-workflow"
+  });
+  console.log(`Got response: ${response}`);
+};
+``` 
+</CodeGroup>
+
+#### Use the native OpenAI client to push data to a workflow
+
+<CodeGroup>
+
+```py Python
+response = client.chat.completions.create(
+    model=ModelTypes.mistral_large_latest.name,
+    temperature=0,
+    max_tokens=1000,
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant. Always JSON"},
+        {"role": "user", "content": "How are you?"},
+    ],
+    extra_headers={
+        # Set this field
+        "workflowName": "Example workflow"
+    }
+)
+``` 
+</CodeGroup>

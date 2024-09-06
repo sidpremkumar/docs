@@ -1,0 +1,99 @@
+---
+title: 'Guardrails Setup'
+description: 'How to setup Guardrails with Lytix'
+---
+
+<Info>
+  **Prerequisites:** Setup optimodel [here](/Quickstart/optimodel-getting-started)
+</Info>
+
+Now you're ready to start adding guardrails to your calls. Here is the general syntax: 
+
+<CodeGroup>
+```py Python
+from optimodel import queryModel
+
+response = await queryModel(
+    ....
+    messages=[
+        ModelMessage(
+            role="system",
+            content="You are a helpful assistant. Always respond in JSON syntax",
+        ),
+        ModelMessage(role="user", content=prompt),
+    ],
+    guards=[...] # Optional guards param
+)
+```
+</CodeGroup>
+
+# Blocking Requests
+
+In addition to the guard itself, you can also use the blockRequest flag to block requests when a guard is active and give a custom message to return instead.
+
+<CodeGroup>
+```py Python
+guards=[MicrosoftPresidioConfig(
+    guardName="MICROSOFT_PRESIDIO_GUARD",
+    guardType="preQuery",
+    entitiesToCheck=["EMAIL_ADDRESS"],
+    blockRequest=True, # Pass this to block the request
+    blockRequestMessage="You are not allowed to ask about this email address" # Pass this to give a custom message
+)]
+```
+</CodeGroup>
+
+# Available Guardrails
+
+### meta-llama/Prompt-Guard-86M
+
+Utilize Meta's prompt guard to protect against jailbreaks and injection attacks. See the model card [here](https://huggingface.co/meta-llama/Prompt-Guard-86M) for more information.
+
+_Note: We recommend starting with only jailbreak with a value of 0.999 unless you know what you are doing_
+
+<CodeGroup>
+```py Python
+guards=[LLamaPromptGuardConfig(
+    guardName="LLamaPromptGuard",
+    jailbreakThreshold=0.9999,
+    guardType="preQuery", # You'll likely only want to guard the input here
+)]
+```
+</CodeGroup>
+
+
+
+### microsoft/Presidio-Guard
+
+Utilize Microsoft's Presidio Guard to protect against PII. See the model card [here](https://microsoft.github.io/presidio/) for more information.
+
+
+
+<CodeGroup>
+```py Python
+guards=[MicrosoftPresidioConfig(
+    guardName="MICROSOFT_PRESIDIO_GUARD",
+    guardType="preQuery",
+    entitiesToCheck=["EMAIL_ADDRESS"], # See the model card for the full list of entities to check
+)]
+```
+</CodeGroup>
+
+
+### lytix/Regex-Guard
+
+Simple regex guard to protect against given regex patterns. See [here](https://github.com/Lytix-Labs/optimodel/blob/master/guardServer/src/optimodel_guard/Guards/RegexGuard.py#L54) for source code on how its implemented.
+
+
+
+
+<CodeGroup>
+```py Python
+guards=[LytixRegexConfig(
+    guardName="LYTIX_REGEX_GUARD",
+    regex="secrets",
+    guardType="preQuery",
+)]
+```
+</CodeGroup>
+

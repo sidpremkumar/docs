@@ -1,0 +1,49 @@
+---
+title: 'Custom LLM Tracing'
+description: 'Learn what it means to capture custom LLM traces'
+---
+
+Lytix supports capturing custom LLM traces (e.g. not associated with any SDK or API call). This is useful if you have custom models you'd still like to track.
+
+<CodeGroup>
+
+```py Python
+from lytix_py import lytix
+
+
+@lytix.trace(modelName="nodeCli")
+async def getResponse(logger):
+    modelOutput = "111Paris is the capital of france1111"
+
+    # Set our defined params however we want
+    lytix.setMessage(userInput, "user")
+    lytix.setMessage(modelOutput, "assistant")
+
+    # Optional values
+    lytix.setUserIdentifier("testUser")
+    lytix.setSessionId("testSession")
+
+    return modelOutput
+```
+
+
+```js Typescript
+import { MetricCollector } from "@lytix/node-cli";
+
+const response = await MetricCollector.captureModelTrace({
+  modelName: "testModelName",
+  systemPrompt: "You area helpful assistant",
+  userPrompt: "Some user input",
+  generateModelOutput: async () => {
+    const openai = new OpenAI();
+    ...
+    /**
+     * This callback is expecting the model output to be returned
+     */
+    return response;
+  }
+});
+```
+
+
+</CodeGroup>

@@ -1,0 +1,156 @@
+---
+title: 'Custom Errors Setup'
+description: 'How to setup custom errors in your project'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key
+  environment variable.
+</Info>
+
+# Install the lytix SDK
+
+<CodeGroup>
+```sh Python
+pip3 install lytix-py
+```
+
+```sh Typescript
+npm install @lytix/client
+```
+
+</CodeGroup>
+
+#### (Reccomended) Set you API key via the environment variable
+
+```sh
+export LX_API_KEY=<your-api-key-here>
+```
+
+#### Set your API key in the code
+
+<CodeGroup>
+```py Python
+from optimodel import LytixCreds
+
+LytixCreds.setAPIKey('<your-api-key-here>')
+```
+
+```ts Typescript
+import { LytixCred } from "@lytix/client";
+
+LytixCreds.setAPIKey("sk-1234");
+```
+</CodeGroup>
+
+# Error Class
+
+You can now just replace all your `raise Exception` calls with `raise LError`. For example: 
+
+<CodeGroup>
+
+```py Python
+from lytix_py import LError, LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some process is starting")
+    raise LError("An unexpected error")
+
+async def main(): 
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+
+```ts Typescript
+import { LError, LLogger } from "@lytix/client";
+
+...
+app.get("/test", async (req, res) => {
+  const logger = new LLogger('testRoute');
+  /**
+   * Lets pretend an error happend
+   */
+  try {
+    logger.info("Some process is starting");
+    throw new LError("An unexpeted error", { env: "prod" });
+  } catch (err) {
+    logger.error("crazy unexpeted error with this user: 123", err);
+    res.sendStatus(500);
+    return;
+  }
+
+  /**
+   * Magically if we ended here, we'd reply with a 200
+   */
+  res.send("Hello World");
+});
+...
+```
+</CodeGroup>
+
+The error, along with the last 20 log lines will automatically get pushed to the Lytix platform [here](https://lab.lytix.co/home/errors). See example event here:
+
+![title](/images/customErrors/customErrorsExample.png)
+
+
+# Error Increment
+
+You can also send an error along with related logs without throwing an error by using the `increment` method. 
+
+<CodeGroup>
+
+```py Python
+from lytix_py.LError import LErrorIncrement, LLogger
+
+async def backgroundProcess():
+    logger = LLogger("background-logger", {"userId": '124'})
+    logger.info("Some context on the user here")
+    try:
+        raise Exception("LIncrement error happened")
+    except Exception as e:
+        logger.error("LIncrement error happened")
+        LErrorIncrement("Some error")
+                        
+async def main(): 
+    logger = LLogger("main-logger")
+    logger.info("Starting in our main LIncrement process")
+    await backgroundProcess()
+
+
+if __name__ == "__main__":
+    logger  = LLogger("main")
+    logger.runInAsyncContext(main)
+```
+```ts Typescript
+import { LErrorIncrement, LLogger } from "@lytix/client";
+
+/**
+ * An example background process
+ */
+const backgroundProcess = async () => {
+  const logger = new LLogger("backgroundProcessExample", { userId: "123" });
+  try {
+    logger.info("Background process started for user!");
+    throw new Error("Unexpected error!");
+  } catch (err) {
+    /**
+     * Just increment to get the logs as well as the error
+     */
+    logger.error(`Unexpected error happened`, err);
+    LErrorIncrement("Unexpected error");
+  }
+};
+```
+
+</CodeGroup>
+
+
+# Examples
+
+To see all examples please check the Github repo [here](https://github.com/Lytix-Labs/lytix-py/tree/master/example)
+

@@ -52,13 +52,24 @@
       ]
     },
     {
-      "group": "Python",
-      "pages": ["Python/error-capturing", "Python/llm-trace"]
+      "group": "Guardrails",
+      "pages": ["Guardrails/guardrails", "Guardrails/guardrails-setup"]
     },
     {
-      "group": "Typescript",
-      "pages": ["Typescript/error-capturing", "Typescript/llm-trace"]
+      "group": "Custom Errors",
+      "pages": [
+        "CustomErrors/custom-errors",
+        "CustomErrors/custom-errors-setup"
+      ]
     },
+    {
+      "group": "Custom LLM Tracing",
+      "pages": [
+        "CustomLLMTracing/custom-llm-tracing",
+        "CustomLLMTracing/custom-llm-tracing-setup"
+      ]
+    },
+
     {
       "group": "Workflows",
       "pages": [
@@ -69,6 +80,10 @@
     {
       "group": "Caching",
       "pages": ["Caching/caching-setup", "Caching/using-caching"]
+    },
+    {
+      "group": "Playground",
+      "pages": ["Playground/playground"]
     },
     {
       "group": "Bot Evaluation",

@@ -1,0 +1,124 @@
+---
+title: 'Custom LLM Tracing Setup'
+description: 'How to setup custom LLM tracing in your project'
+---
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key
+  environment variable.
+</Info>
+
+# Install the lytix SDK
+
+<CodeGroup>
+```sh Python
+pip3 install lytix-py
+```
+
+```sh Typescript
+npm install @lytix/client
+```
+
+</CodeGroup>
+
+#### (Reccomended) Set you API key via the environment variable
+
+```sh
+export LX_API_KEY=<your-api-key-here>
+```
+
+#### Set your API key in the code
+
+<CodeGroup>
+```py Python
+from optimodel import LytixCreds
+
+LytixCreds.setAPIKey('<your-api-key-here>')
+```
+
+```ts Typescript
+import { LytixCred } from "@lytix/client";
+
+LytixCreds.setAPIKey("sk-1234");
+```
+</CodeGroup>
+
+
+# Capture Model Trace
+
+Capture custom model IO events outside of any SDK or client
+
+
+<CodeGroup>
+```py Python
+import asyncio
+from lytix_py import lytix
+
+
+userInput = "Whats the capital of France?"
+
+"""
+The function to be traced
+"""
+
+
+@lytix.trace(modelName="testModelName")
+async def getResponse(logger):
+    modelOutput = "Paris is the capital of france"
+
+    # Set our defined params however we want
+    lytix.setMessage(userInput, "user")
+
+    # Set a system message
+    lytix.setMessage("You are a helpful assistant", "system")
+
+    # Set the output
+    lytix.setMessage("Ouput of model", "assistant")
+
+    # Optional values
+    lytix.setUserIdentifier("testUser")
+    lytix.setSessionId("testSession")
+
+    return modelOutput
+
+
+async def main():
+    response = await getResponse("What is the capital of France?")
+    print(response)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+```ts Typescript
+import { MetricCollector } from "@lytix/client";
+
+await MetricCollector.captureModelIO({
+  modelName: "testModelName",
+  systemPrompt: "You area helpful assistant",
+  userPrompt: "Some user input",
+  assistantMessage: "Some model output",
+
+
+  /**
+   * Optional fields
+   */
+  metricMetadata: {
+    /**
+     * Optional extra data
+     */
+    env: "prod",
+  }
+  userIdentifier?: string;
+  sessionId?: string;
+);
+```
+
+
+    </CodeGroup>
+
+
+You'll now see the model IO trace in the Lytix platform [here](https://lab.lytix.co/home/logs).
+
+![title](/images/node-quickstart/llm-trace.png)
