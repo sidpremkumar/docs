@@ -70,8 +70,7 @@ Now you are ready to make your first call by passing in the `LX_API_KEY` environ
 
 <CodeGroup>
 ```py Python Example
-from optimodel import queryModel, listModels
-from optimodel_server_types import ModelMessage, ModelTypes
+from optimodel import queryModel, listModels, ModelMessage, ModelTypes
 
 prompt = "Hello How are you?"
 
@@ -169,7 +168,7 @@ Where each items in `credentials` can be any of the following
 <CodeGroup>
 
 ```ts Python
-from optimodel_server_types import AWSBedrockCredentials
+from optimodel import AWSBedrockCredentials
 
 creds = AWSBedrockCredentials(
   awsAccessKeyId="$AWS_ACCESS_KEY_ID",
@@ -195,7 +194,7 @@ const creds: AWSBedrockCredentials = {
 <CodeGroup>
 
 ```ts Python
-from optimodel_server_types import OpenAICredentials
+from optimodel import OpenAICredentials
 
 creds = OpenAICredentials(
   openAiKey="$OPENAI_API_KEY",
@@ -218,7 +217,7 @@ const creds: OpenAICredentials = {
 <CodeGroup>
 
 ```ts Python
-from optimodel_server_types import AnthropicCredentials
+from optimodel import AnthropicCredentials
 
 creds = AnthropicCredentials(
   anthropicApiKey="$ANTHROPIC_API_KEY",
@@ -240,7 +239,7 @@ const creds: AnthropicCredentials = {
 <CodeGroup>
 
 ```ts Python
-from optimodel_server_types import TogetherAICredentials
+from optimodel import TogetherAICredentials
 
 creds = TogetherAICredentials(
   togetherApiKey="$TOGETHER_API_KEY",
@@ -263,7 +262,7 @@ const creds: TogetherAICredentials = {
 <CodeGroup>
 
 ```ts Python
-from optimodel_server_types import GroqCredentials
+from optimodel import GroqCredentials
 
 creds = GroqCredentials(
   groqApiKey="$ANTHROPIC_API_KEY",
@@ -286,7 +285,7 @@ const creds: GroqCredentials = {
 <CodeGroup>
 
 ```ts Python
-from optimodel_server_types import MistralAICredentials
+from optimodel import MistralAICredentials
 
 creds = MistralAICredentials(
   mistralApiKey="$MISTRAL_API_KEY",
