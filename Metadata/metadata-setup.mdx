@@ -5,12 +5,18 @@ description: 'How to start sending metadata'
 
 ![Workflow Example](https://lytix-cdn.s3.amazonaws.com/documentationAssets/workflows/metadataIntro.gif)
 
-Metadata allows you to add additional information to your LLM data. This can be useful to filter and narrow down your data.
+Metadata allows you to add custom tags to your LLM calls. This can be useful for grouping and filtering data by environment (i.e. `dev`, `stage`, `prod`), regions (i.e. `us-east-1`, `eu-west-1`) or model/device versioning.
+
+<Note>
+**Note:** Metada works best with >50 unique key-value pairs. Metadata is not useful for storing highly unique strings (such as user id's, randomly generated values, e.g. anything with high cardinality). Columns with high cardinality with result in perfromance issues. Contact support@lytix.co if you need to store highly unique values.
+</Note>
+
 
 <Note>
 **Note:** There are some reserved keys you should not use:
 - `env`: This is used to track the environment of the LLM call. This is a key managed by Lytix and only accepts values of `dev`, `stage` or `prod`.
 </Note>
+
 
 #### Use [Optimodel](/OptiModel/getting-started) to push metadata (see code below)
 
