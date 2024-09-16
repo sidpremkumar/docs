@@ -1,24 +1,18 @@
 ---
-title: 'Workflow Setup'
-description: 'How to setup workflows'
+title: 'Metadata'
+description: 'How to start sending metadata'
 ---
 
-![Workflow Example](https://lytix-cdn.s3.amazonaws.com/documentationAssets/workflows/workflowExampleGif.gif)
+![Workflow Example](https://lytix-cdn.s3.amazonaws.com/documentationAssets/workflows/metadataIntro.gif)
 
-Workflows are ways to group and analyze your LLM data. Not all calls to a given model should be evaluated the same way, so workflows allow you to define different evaluation criteria for different models.
+Metadata allows you to add additional information to your LLM data. This can be useful to filter and narrow down your data.
 
-In addition to high level metrics, workflows also allow you to define custom evaluation criteria that you can use to evaluate your LLM data. 
+<Note>
+**Note:** There are some reserved keys you should not use:
+- `env`: This is used to track the environment of the LLM call. This is a key managed by Lytix and only accepts values of `dev`, `stage` or `prod`.
+</Note>
 
-
-# Setup A Workflow
-
-Workflows are created when data is first pushed and tagged with a given workflow name. There are two ways to create a workflow:
-
-#### Use an API Key
-
-Use an API key to automatically push data to a workflow. Learn more [here](/APIKeys/api-keys-and-workflows).
-
-#### Use [Optimodel](/OptiModel/getting-started) to push data to a workflow (see code below)
+#### Use [Optimodel](/OptiModel/getting-started) to push metadata (see code below)
 
 <CodeGroup>
 
@@ -26,8 +20,6 @@ Use an API key to automatically push data to a workflow. Learn more [here](/APIK
 from optimodel import queryModel, ModelTypes, ModelMessage, ModelMessageContentEntry
 
 response = await queryModel(
-    # Just set this field
-    workflowName="test-workflow", 
     model=ModelTypes.llama_3_70b_instruct,
     messages=[
         ModelMessage(
@@ -38,6 +30,10 @@ response = await queryModel(
             ModelMessageContentEntry(type="text", text="Hello how are you again?"),
         ]),
     ],
+    # Just set this field
+    metadata={
+        "key": "value"
+    }
 )
 ``` 
 
@@ -52,14 +48,17 @@ const main = async () => {
       { role: "user", content: prompt },
       { role: "system", content: "Always respond with a JSON object" },
     ],
-    workflowName="test-workflow"
+    // Just set this field
+    metadata={
+        "key": "value"
+    }
   });
   console.log(`Got response: ${response}`);
 };
 ``` 
 </CodeGroup>
 
-#### Use the native OpenAI client to push data to a workflow
+#### Use the native OpenAI client to push metadata
 
 <CodeGroup>
 
@@ -73,8 +72,8 @@ response = client.chat.completions.create(
         {"role": "user", "content": "How are you?"},
     ],
     extra_headers={
-        # Set this field
-        "workflowName": "Example workflow"
+        # Set this field, replace {METADATA_KEY} and {METADATA_VALUE} with your metadata
+        "lytix-metadata-key-{METADATA_KEY}": "{METADATA_VALUE}"
     }
 )
 ``` 
@@ -88,7 +87,8 @@ const response = await client.chat.completions.create(
   {
     headers: {
       // Add your workflowName to track workflows
-      "workflowName": "test-workflow",
+      // Replace {METADATA_KEY} and {METADATA_VALUE} with your metadata
+      "lytix-metadata-key-{METADATA_KEY}": "{METADATA_VALUE}"
     },
   }
 );

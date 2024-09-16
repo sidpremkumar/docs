@@ -56,6 +56,14 @@
       "pages": ["Guardrails/guardrails", "Guardrails/guardrails-setup"]
     },
     {
+      "group": "Metadata",
+      "pages": ["Metadata/metadata-setup"]
+    },
+    {
+      "group": "Guardrails",
+      "pages": ["Guardrails/guardrails", "Guardrails/guardrails-setup"]
+    },
+    {
       "group": "Custom Errors",
       "pages": [
         "CustomErrors/custom-errors",
