@@ -48,6 +48,7 @@
       "pages": [
         "Quickstart/optimodel-getting-started",
         "Quickstart/openai-integration",
+        "Quickstart/vercelai-integration",
         "Quickstart/gemini-integration"
       ]
     },

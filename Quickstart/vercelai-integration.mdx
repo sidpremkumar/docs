@@ -1,0 +1,145 @@
+---
+title: 'Vercel AI Integration'
+description: 'How to integrate Vercel AI with Lytix'
+---
+
+
+With a couple of lines of code, you can start using Lytix to manage your evaluation and usage via the Vercel AI SDK.
+
+<Info>
+  **Prerequisite** First create a lytix account [here](https://lab.lytix.co/home/login)
+</Info>
+
+
+# Anthropic
+
+### Step 1: Install the SDK
+
+<CodeGroup>
+
+```sh Typescript
+npm i @ai-sdk/anthropic ai
+```
+</CodeGroup>
+
+### Step 2: Update You Client
+
+<CodeGroup>
+
+```js Typescript
+import { createAnthropic } from "@ai-sdk/anthropic";
+
+const anthropic = createAnthropic({
+    baseURL: "https://api.lytix.co/proxy/v1/anthropic",
+    apiKey: "$LYTIX_API_KEY",
+    headers: {
+      anthropicApiKey: "$ANTHROPIC_API_KEY",
+    },
+});
+```
+</CodeGroup>
+
+
+### Step 3: Start Querying
+
+<CodeGroup>
+```js Typescript
+import { generateText } from "ai";
+
+const response = await generateText({
+    // Choose your model here
+    model: openai("gpt-4o-mini"),
+
+    /**
+     * Either
+     */
+    prompt: "What is the meaning of life?",
+    system: "Always respond with a JSON object",
+
+    /**
+     * Or
+     */
+    messages: [
+        { role: "user", content: "What is the meaning of life?" },
+        { role: "system", content: "Always respond with a JSON object" },
+    ],
+    temperature: 0.5,
+    maxTokens: 1000,
+    headers: {
+        // ...see extra headers below
+    },
+});
+```
+</CodeGroup>
+
+# OpenAI
+
+
+### Step 1: Install the SDK
+
+<CodeGroup>
+
+```sh Typescript
+npm i @ai-sdk/openai ai
+```
+</CodeGroup>
+
+### Step 2: Update You Client
+
+<CodeGroup>
+
+```js Typescript
+import { createOpenAI } from "@ai-sdk/openai";
+
+const openai = createOpenAI({
+    baseURL: "https://api.lytix.co/proxy/v1/openai",
+    apiKey: "$LYTIX_API_KEY",
+    headers: {
+      openaiKey: "$OPENAI_API_KEY",
+    },
+});
+```
+</CodeGroup>
+
+
+### Step 3: Start Querying
+
+<CodeGroup>
+```js Typescript
+import { generateText } from "ai";
+
+const response = await generateText({
+    // Choose your model here
+    model: openai("gpt-4o-mini"),
+
+    /**
+     * Either
+     */
+    prompt: "What is the meaning of life?",
+    system: "Always respond with a JSON object",
+
+    /**
+     * Or
+     */
+    messages: [
+        { role: "user", content: "What is the meaning of life?" },
+        { role: "system", content: "Always respond with a JSON object" },
+    ],
+    temperature: 0.5,
+    maxTokens: 1000,
+    headers: {
+        // ...see extra headers below
+    },
+});
+```
+</CodeGroup>
+
+
+# Extra Headers
+
+When querying you can pass the following headers to the client:
+
+- `workflowName` - The name of the workflow to create (see [workflow setup](/Workflows/workflows-setup) for more information)
+- `userId` - The id of the user 
+- `sessionId` - The id of the session to group calls together
+- `cacheTTL` - The number of seconds to cache the response for. Please see [caching](/Caching/caching-setup) to setup your cache. 
