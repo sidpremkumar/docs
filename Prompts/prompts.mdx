@@ -1,0 +1,67 @@
+---
+title: 'Prompts'
+description: 'Prompt management and optimization at lytix'
+---
+
+Lytix supports prompt management, testing and optimization. Learn more below
+
+# Prompt Management
+
+Lytix support saving and versioning prompts. You can create a new prompt by visiting the [prompt page](https://lab.lytix.co/home/prompts/) and clicking the `New Prompt` button.
+
+![title](/images/prompts/promptPageMain.png)
+
+You can then edit and save your prompt. Test your prompt against any LLM available in the [playground](/Playground/playground)
+
+![title](/images/prompts/savePrompt.png)
+
+Finally you can view existing versions of your prompt and view the diff between them by clickin 'Prompt Versions'
+
+![title](/images/prompts/promptVersion.png)
+
+
+# Prompt Testing
+
+You can track and test against eedge cases for your prompts. Start by adding a new test case
+
+## Adding A New Test Case
+
+Head over to the tab 'Test Cases' and click the `New Test Case` button.
+
+![title](/images/prompts/testCasePage.png)
+
+Then enter the input (user and system) prompts and the expected output. Remember that values such as `{{ SYSTEM_PROMPT }}` will be replaced with the current system prompt when lytix runs your test case.
+
+## Running A Test Suite
+
+After you've collected a number of test cases you can then run the test suite by clicking the `Test Run` tab.
+
+Here you'll be able to run your test suite against a given model with specific parameters. To get started, click the 'New Test Run' button.
+
+![title](/images/prompts/newTestRun.png)
+
+Now select the parameters you want to test against. **This should be the parameters you use in production**.
+
+![title](/images/prompts/newTestRunDialog.png)
+
+You can then see the result of the test run after it's finished. You have the option to manually view the diff and mark certain ones as pass/fail.
+
+![title](/images/prompts/testRunResults.png)
+
+# Prompt Optimization
+
+After you've run a test suite, you might find some edge cases that you want to fix. Lytix supports automatically optimizing your prompt to fix these edge cases in a given test suite. Just click the `Optimize Prompt` button on your test suite.
+
+![title](/images/prompts/optimizePrompt.png)
+
+You'll then be redirected to dialog where you can specify the model you'd like to optimize for.
+
+![title](/images/prompts/optimizePromptDialog.png)
+
+It can take a few minutes to run the optimization. You can always come back later to view the results.
+
+![title](/images/prompts/optimizationWaiting.png)
+
+You can then view the results of the optimization, and save it as the current version of your prompt. You'll also see the test cases that were unable to pass after optimization.
+
+![title](/images/prompts/promptOptimizationResults.png)

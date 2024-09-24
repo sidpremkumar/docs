@@ -102,6 +102,10 @@
       ]
     },
     {
+      "group": "Prompts",
+      "pages": ["Prompts/prompts"]
+    },
+    {
       "group": "Integrations",
       "pages": ["integrations/helicone", "integrations/posthog"]
     },
