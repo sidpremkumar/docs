@@ -1,0 +1,71 @@
+---
+title: 'Langchain Integration'
+description: 'How to integrate Langchain with Lytix'
+---
+
+
+Use Lytix to manage your evaluation and usage diretly with the Langchain SDK. Gain access to models across providers and manage your usage and billing.
+
+
+# Quickstart
+
+<Info>
+  **Prerequisite** First create a lytix account [here](https://lab.lytix.co/home/login)
+</Info>
+
+### Create a Lytix API Key
+
+Start by creating and noting down a lytix api key. See instructions [here](/api-key-setup)
+
+### Install the Langchain SDK
+
+```sh Python
+pip install -qU langchain-openai
+```
+
+### Initialize the ChatOpenAI client
+
+```py Python
+from langchain_openai import ChatOpenAI
+
+model = ChatOpenAI(
+    model="gpt-4o-mini", 
+    # Update your api key to the lytix api key
+    base_url=f"https://api.lytix.co/proxy/v1/openai", 
+    # Update your api key to the lytix api key
+    api_key="$LYTIX_API_KEY",
+    default_headers={
+        # Move your openai key to the default headers
+        "openaiKey": "$OPENAI_API_KEY"
+    },
+)
+```
+
+<Info>
+  **🇪🇺 Note** You will need to use `https://eu.api.lytix.co/proxy/v1/openai` if you are in the EU region.
+</Info>
+
+### Continue Using Langchain Normally!
+
+You can now continue using Langchain as you normally would and use this model as you would any other Langchain model.
+
+```js Typescript
+messages = [
+    (
+        "system",
+        "You are a helpful assistant that translates English to French. Translate the user sentence.",
+    ),
+    ("human", "I love programming."),
+]
+
+response = model.invoke(messages)
+print("Got response: ", response)
+```
+
+
+
+#### Optional Fields 
+
+⚡ Coming Soon. 
+
+We're working to add sessionId, userId, workflows and more to Langchain integrations. 
