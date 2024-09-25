@@ -62,7 +62,8 @@ const client = new OpenAI({
 
 Optimodel supports a variety of optional parameters to help you get the best results.
 
-```py
+<CodeGroup>
+```py Python
 response = client.chat.completions.create(
    ...,
     extra_body={
@@ -77,18 +78,50 @@ response = client.chat.completions.create(
 )
 ```
 
-You will need to use the `optimodel-py` package to use these parameters.
+```ts Typescript
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+    // @ts-ignore Add any body parameters here
+    "lytix-guards": [
+      {
+        guardName: "META_LLAMA_PROMPT_GUARD_86M",
+        jailbreakThreshold: 0.9999,
+        guardType: "preQuery",
+        blockRequest: true,
+        blockRequestMessage: "You are not allowed to respond to this message",
+      } as LLamaPromptGuardConfig,
+    ],
+  },
+  {
+    headers: {
+      userId: "sid@lytix.co",
+      ...
+    },
+  }
+);
+```
+</CodeGroup>
+You will need to use the `optimodel-py`/`@lytix/client` package to use these parameters.
 
-```sh
+<CodeGroup>
+```sh Python
 pip3 install optimodel-py
 ```
+
+```sh Typescript
+npm i @lytix/client
+```
+</CodeGroup>
 
 The following optional parameters are supported:
 
 #### Guards
 
 `lytix-guards`: Pass in a list of fallback models to use
-```py
+
+<CodeGroup>
+```py Python
   from optimodel_server_types import LLamaPromptGuardConfig
   extra_body={
       "lytix-guards": [LLamaPromptGuardConfig(
@@ -98,13 +131,36 @@ The following optional parameters are supported:
       ).dict()]
   }
 ```
+
+```ts Typescript
+import { LLamaPromptGuardConfig } from "@lytix/client";
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+    "lytix-guards": [
+      {
+        guardName: "META_LLAMA_PROMPT_GUARD_86M",
+        jailbreakThreshold: 0.9999,
+        guardType: "preQuery",
+        blockRequest: true,
+        blockRequestMessage: "You are not allowed to respond to this message",
+      } as LLamaPromptGuardConfig,
+    ],
+  }
+)
+```
+</CodeGroup>
+
 See [here](https://github.com/Lytix-Labs/optimodel/tree/master?tab=readme-ov-file#guards) for a list of all supported guards
 
 
 #### Fallback Models
 
 `lytix-fallbackModels`: Pass in a list of extra models to try if the primary model fails. This can be helpful in mitigating provider outages.
-```py
+
+<CodeGroup>
+```py Python
   from optimodel_server_types import ModelTypes
   ...
   extra_body={
@@ -112,29 +168,71 @@ See [here](https://github.com/Lytix-Labs/optimodel/tree/master?tab=readme-ov-fil
   }
 ```
 
+```ts Typescript
+import { ModelTypes } from "@lytix/client";
+...
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+    "lytix-fallbackModels": [
+      ModelTypes.claude_3_5_sonnet,
+    ],
+  }
+)
+```
+</CodeGroup>
+
 #### Speed Priority
 
 `lytix-speedPriority`: Pass in a speed priority to use
 
-```py
+<CodeGroup>
+```py Python
 extra_body={
   "lytix-speedPriority": "low"
 }
 ```
 
+```ts Typescript
+import { SpeedPriority } from "@lytix/client";
+...
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+    "lytix-speedPriority": SpeedPriority.low,
+  }
+)
+```
+</CodeGroup>
 If set to `low`, optimodel will choose the cheapest possible model across all providers (for example if you have two providers `bedrock` and `anthropic` that both offer `claude-3-opus`, optimodel will choose the `claude-3-opus` model with the lowest price regardless of which provider is faster). If set to `high`, optimodel will choose the fastest possible model across all providers.
 
 #### Provider
 
 `lytix-provider`: Pass in a provider to use
 
-```py
+<CodeGroup>
+```py Python
 from optimodel_server_types import Providers
 ...
 extra_body={
     "lytix-provider": ProviderTypes.bedrock.name
 }
+  ```
+
+```ts Typescript
+import { ProviderTypes } from "@lytix/client";
+...
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+    "lytix-provider": ProviderTypes.bedrock.name
+  }
+)
 ```
+</CodeGroup>
 
 Explicitly specify a provider to use incase you have multiple providers available for a specific model and want to force a specific one.
 
@@ -145,31 +243,83 @@ You can also track workflows, users and sessions to get a better understanding o
 
 `sessionId`: A unique identifier for the session.
 
-```py
+<CodeGroup>
+```py Python
 extra_headers={
   "sessionId": "1234567890"
 }
 ```
 
+```ts Typescript
+import { LLamaPromptGuardConfig } from "@lytix/client";
+...
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+  },
+  {
+    headers: {
+      sessionId: "1234567890",
+    },
+  }
+)
+```
+</CodeGroup>
+
 #### UserId
 
 `userId`: A unique identifier for the user.
 
-```py
+<CodeGroup> 
+```py Python
 extra_headers={
   "userId": "sid@lytix.co"
 }
 ```
 
+```ts Typescript
+...
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+  },
+  {
+    headers: {
+      userId: "sid@lytix.co",
+    },
+  }
+)
+```
+</CodeGroup>
+
 #### WorkflowName
 
 `workflowName`: A unique identifier for the workflow. If this workflow does not exist, it will be created and can be viewed [here](https://lab.lytix.co/home/workflows)
 
-```py
+<CodeGroup>
+```py Python
 extra_headers={
   "workflowName": "test-workflow"
 }
+  ```
+
+```ts Typescript
+...
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    ...,
+  },
+  {
+    headers: {
+      workflowName: "test-workflow",
+    },
+  }
+)
 ```
+</CodeGroup>
 
 # Passing in Images
 
@@ -204,6 +354,40 @@ response = client.chat.completions.create(
 )
 ```
 
+```ts Typescript
+...
+
+import fs from 'fs';
+
+// Function to encode image to base64
+function encodeImageToBase64(filePath: string): string {
+  const image = fs.readFileSync(filePath);
+  return image.toString('base64');
+}
+
+// Usage
+const imagePath = 'some.png';
+const encodedImage = encodeImageToBase64(imagePath);
+
+const chatCompletion = await client.chat.completions.create({
+  model: "gpt-4o-mini",
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "What's this image?" },
+        {
+          type: "image_url",
+          image_url: {
+            url: `data:image/png;base64,${encodedImage}`
+          }
+        }
+      ]
+    }
+  ],
+  max_tokens: 300
+});
+```
 </CodeGroup>
 
 Then you can switch to a model such as `claude-3-5-sonnet` and pass the image in with no code changes. 
@@ -218,6 +402,18 @@ response = client.chat.completions.create(
       # Same as above
       ...
     ],
+)
+```
+
+```ts Typescript
+import { ModelTypes } from "@lytix/client";
+
+const chatCompletion = await client.chat.completions.create(
+  {
+    model: ModelTypes.claude_3_5_sonnet.name,
+    ...,
+  },
+  
 )
 ```
 </CodeGroup>
