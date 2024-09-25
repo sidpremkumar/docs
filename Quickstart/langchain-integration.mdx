@@ -64,8 +64,31 @@ print("Got response: ", response)
 
 
 
-#### Optional Fields 
+### Optional Fields 
 
-⚡ Coming Soon. 
+You can pass these fields by updating your model as follows:
 
-We're working to add sessionId, userId, workflows and more to Langchain integrations. 
+```py Python
+model = ChatOpenAI(
+  model="gpt-4o-mini",  # Update your base url to the lytix proxy
+  base_url=f"https://api.lytix.co/proxy/v1/openai",
+  # Update your api key to the lytix api key
+  api_key=LYTIX_API_KEY,
+  default_headers={
+      ...,
+      # Optional fields
+      "userId": "sid@lytix.co",
+      "workflowName": "Example workflow",
+      "cacheTTL": "60",
+      "sessionId": "1234567890",
+  },
+)
+```
+
+Langchain supports the following optional fields with Lytix:
+
+- `sessionId`: You can pass a sessionId to track usage for a specific session.
+- `userId`: You can pass a userId to track usage for a specific user.
+- `workflowName`: You can pass a workflowName to track usage for a specific workflow. Learn more about workflows [here](/Workflows/workflows-setup).
+- `cacheTTL`: You can pass a cacheTTL to cache the response for a specific amount of time. Learn more about caching [here](/Caching/caching-setup).
+
