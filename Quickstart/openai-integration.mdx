@@ -58,53 +58,118 @@ const client = new OpenAI({
   **🇪🇺 Note** You will need to use `https://eu.api.lytix.co/proxy/v1/openai` if you are in the EU region.
 </Info>
 
-#### Optional Fields
+### Optional Fields
 
-You can also track workflows, users and sessions to get a better understanding of your users and how they interact with your models.
+Optimodel supports a variety of optional parameters to help you get the best results.
 
-- `sessionId`: A unique identifier for the session.
-- `userId`: A unique identifier for the user.
-- `workflowName`: A unique identifier for the workflow. If this workflow does not exist, it will be created and can be viewed [here](https://lab.lytix.co/home/workflows)
-
-<CodeGroup>
-
-```py Python
+```py
 response = client.chat.completions.create(
-    model="gpt-4",
+   ...,
+    extra_body={
+        "lytix-fallbackModels": ...
+        ...
+    },
     extra_headers={
-        # Add your sessionId to track sessions
         "sessionId": "1234567890",
-        # Add your userId to track users
         "userId": "sid@lytix.co",
-        # Add your workflowName to track workflows
         "workflowName": "test-workflow",
     },
-    messages=[
-       ...
-    ],
 )
 ```
 
-```ts Typescript
-const response = await client.chat.completions.create(
-  {
-    messages: [{ role: "user", content: "Say this is a test" }],
-    model: "gpt-4",
-  },
-  {
-    headers: {
-      // Add your sessionId to track sessions
-      "sessionId": "1234567890",
-      // Add your userId to track users
-      "userId": "sid@lytix.co",
-      // Add your workflowName to track workflows
-      "workflowName": "test-workflow",
-    },
-  }
-);
+You will need to use the `optimodel-py` package to use these parameters.
+
+```sh
+pip3 install optimodel-py
 ```
 
-</CodeGroup>
+The following optional parameters are supported:
+
+#### Guards
+
+`lytix-guards`: Pass in a list of fallback models to use
+```py
+  from optimodel_server_types import LLamaPromptGuardConfig
+  extra_body={
+      "lytix-guards": [LLamaPromptGuardConfig(
+          guardName="LLamaPromptGuard",
+          jailbreakThreshold=0.9999,
+          guardType="preQuery", # You'll likely only want to guard the input here
+      ).dict()]
+  }
+```
+See [here](https://github.com/Lytix-Labs/optimodel/tree/master?tab=readme-ov-file#guards) for a list of all supported guards
+
+
+#### Fallback Models
+
+`lytix-fallbackModels`: Pass in a list of extra models to try if the primary model fails. This can be helpful in mitigating provider outages.
+```py
+  from optimodel_server_types import ModelTypes
+  ...
+  extra_body={
+    "lytix-fallbackModels": [ModelTypes.claude_3_5_sonnet.name, ...]
+  }
+```
+
+#### Speed Priority
+
+`lytix-speedPriority`: Pass in a speed priority to use
+
+```py
+extra_body={
+  "lytix-speedPriority": "low"
+}
+```
+
+If set to `low`, optimodel will choose the cheapest possible model across all providers (for example if you have two providers `bedrock` and `anthropic` that both offer `claude-3-opus`, optimodel will choose the `claude-3-opus` model with the lowest price regardless of which provider is faster). If set to `high`, optimodel will choose the fastest possible model across all providers.
+
+#### Provider
+
+`lytix-provider`: Pass in a provider to use
+
+```py
+from optimodel_server_types import Providers
+...
+extra_body={
+    "lytix-provider": ProviderTypes.bedrock.name
+}
+```
+
+Explicitly specify a provider to use incase you have multiple providers available for a specific model and want to force a specific one.
+
+You can also track workflows, users and sessions to get a better understanding of your users and how they interact with your models.
+
+#### SessionId
+
+
+`sessionId`: A unique identifier for the session.
+
+```py
+extra_headers={
+  "sessionId": "1234567890"
+}
+```
+
+#### UserId
+
+`userId`: A unique identifier for the user.
+
+```py
+extra_headers={
+  "userId": "sid@lytix.co"
+}
+```
+
+#### WorkflowName
+
+`workflowName`: A unique identifier for the workflow. If this workflow does not exist, it will be created and can be viewed [here](https://lab.lytix.co/home/workflows)
+
+```py
+extra_headers={
+  "workflowName": "test-workflow"
+}
+```
 
 # Passing in Images
 
@@ -155,7 +220,6 @@ response = client.chat.completions.create(
     ],
 )
 ```
-
 </CodeGroup>
 
 

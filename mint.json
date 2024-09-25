@@ -46,11 +46,11 @@
     {
       "group": "Quickstart",
       "pages": [
-        "Quickstart/optimodel-getting-started",
         "Quickstart/openai-integration",
         "Quickstart/vercelai-integration",
         "Quickstart/gemini-integration",
-        "Quickstart/langchain-integration"
+        "Quickstart/langchain-integration",
+        "Quickstart/optimodel-getting-started"
       ]
     },
     {
