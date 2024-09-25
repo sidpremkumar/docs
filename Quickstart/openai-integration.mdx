@@ -106,6 +106,59 @@ const response = await client.chat.completions.create(
 
 </CodeGroup>
 
+# Passing in Images
+
+Passing images to any model uses the OpenAIs syntax. Underneath we'll convert the syntax for the model you're using.
+
+<CodeGroup>
+```py Python
+import base64
+
+# Encode the image to base64
+with open("some.png", "rb") as image_file:
+    encoded_string = base64.b64encode(image_file.read())
+    encoded_string = encoded_string.decode('utf-8')
+
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        ...
+        {
+            "role": "user", 
+            "content": [
+                {"type": "text", "text": "whats this image?"}, 
+                {
+                    "type": "image_url", 
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{encoded_string}"
+                    }
+                }
+            ]
+        },
+    ],
+)
+```
+
+</CodeGroup>
+
+Then you can switch to a model such as `claude-3-5-sonnet` and pass the image in with no code changes. 
+
+<CodeGroup>
+```py Python
+from optimodel_server_types import ModelTypes,
+
+response = client.chat.completions.create(
+    model=ModelTypes.claude_3_5_sonnet.name,
+    messages=[
+      # Same as above
+      ...
+    ],
+)
+```
+
+</CodeGroup>
+
+
 # Using Models From Other Providers
 
 Beyond the models available on the OpenAI API, Lytix also supports a range of other models from different providers. Just add the credentials for the model/provider and you can start using them immediately.
@@ -181,11 +234,13 @@ const response = await client.chat.completions.create(
 
 To pass in credentials for a provider, you can add the credentials to the headers. The following is a list of credentils you can pass in:
 
-- `mistralApiKey`: The API key for the Mistral model.
-- `openaiKey`: The API key for the OpenAI model.
-- `anthropicApiKey`: The API key for the Anthropic model.
-- `groqApiKey`: The API key for the Groq model.
-- `togetherApiKey`: The API key for the Together model.
+- `mistralApiKey`: The API key for the Mistral API.
+- `mistralCodeStralApiKey`: The API key for the Mistral CodeStral API.
+- `openaiKey`: The API key for the OpenAI API.
+- `anthropicApiKey`: The API key for the Anthropic API.
+- `groqApiKey`: The API key for the Groq API.
+- `togetherApiKey`: The API key for the Together API.
+- `geminiApiKey`: The API key for the Gemini API.
 
 **Bedrock** To run models via bedrock, 3 headers are required:
 
