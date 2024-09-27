@@ -165,18 +165,36 @@ const lytixVideoId = await UploadFileToAzureAndLytix({
 Then upload your file to Gemini as you normally would.
 
 ```ts
+import { GoogleAIFileManager } from "@google/generative-ai/server";
+
 const fileManager = new GoogleAIFileManager(
-  "..."
+  "$GEMINI_API_KEY"
 );
 let uploadResult = await fileManager.uploadFile(filePath, {
   mimeType: "video/quicktime",
 });
+
+/**
+ * Await until the file is uploaded
+ */
+while (uploadResult.state !== "ACTIVE") {
+  /**
+   * Delay + requery
+   */
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  uploadResult = await fileManager.getFile(uploadResult.file.name);
+}
 ```
 
 Finally, pass the `lytixVideoId` when making your Gemini query.
 
 ```ts
 import { LytixCreds } from "@lytix/client";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genAI = new GoogleGenerativeAI(
+  "$GEMINI_API_KEY"
+);
 
 const customHeaders = new Headers({
   "lx-api-key": LytixCreds.LX_API_KEY,

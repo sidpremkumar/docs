@@ -100,51 +100,9 @@ const customHeaders = new Headers({
 
 </CodeGroup>
 
-# [Coming Soon ⚡] Saving Video Responses 
+# Saving Video Responses 
 
-Sometimes you'd like the ability to save video inputs in your events. This can be done to reply and debug events after the fact. 
-
-Gemini does not support querying the files passed into the model query (e.g. the result of `fileManager.uploadFile` cannot be retrieved after the response has been generated).
-
-To get around this, you can point to a URL that will be used to save the video response. This URL can be passed in as a header and will be saved on the event in the Lytix platform. 
-
-```ts Typescript
-const customHeaders = new Headers({
-  "lx-api-key": "$LYTIX_API_KEY",
-  // Add the URL to save the video response
-  "videoURL": "$FILE_URI:FILE_MIMIE_TYPE:$URL_OF_VIDEO",
-});
-
-// ...The rest of your code as normal
-```
-A full example if you choose to save the video response to S3:
-
-```ts Typescript
-// First upload your field to Gemini
-const fileManager = new GoogleAIFileManager(
-  "$GEMINI_API_KEY"
-);
-const uploadResult = await fileManager.uploadFile(...);
-
-// (sudo code) Next save your file to S3
-const s3URL = await uploadFileToS3({
-  bucket: 'your-s3-bucket-name',
-  key: 'path/to/file.mp4',
-  body: uploadResult.file, // Assuming uploadResult contains the file data
-  contentType: 'video/mp4' // Adjust based on actual file type
-});
-
-// Now when creating custom headers, pass in the S3 URL
-
-const customHeaders = new Headers({
-  "lx-api-key": "$LYTIX_API_KEY",
-  // Add the URL to save the video response
-  "videoURL": `${uploadResult.file.uri}:${uploadResult.file.mimeType}:${s3URL}`,
-});
-// ...The rest of your code as normal
-```
-
-We'll save this metadata in the Lytix platform and you'll be able to reply and debug this event in the future.
+Please see our [Video Integration Guide](/MultiModal/video) for more information.
 
 # Using Models From Other Providers
 
