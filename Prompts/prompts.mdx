@@ -3,22 +3,27 @@ title: 'Prompts'
 description: 'Prompt management and optimization at lytix'
 ---
 
-Lytix supports prompt management, testing and optimization. Learn more below
+Lytix helps developers manage, test and automatically improve their prompts. Learn more below
 
 # Prompt Management
+
+Lytix supports optimizing and versioning prompts, to help with prompt engineering and experimentation. Any models that are created or optimized with lytix will be stored and versioned in the [“Prompts”](https://lab.lytix.co/home/prompts/) page (each version listed under “Prompt Versions”). 
+
+### Making a New Prompt
 
 Lytix support saving and versioning prompts. You can create a new prompt by visiting the [prompt page](https://lab.lytix.co/home/prompts/) and clicking the `New Prompt` button.
 
 ![title](/images/prompts/promptPageMain.png)
 
-You can then edit and save your prompt. Test your prompt against any LLM available in the [playground](/Playground/playground)
+First, use the lytix playground to experiment with different prompts and foundational models. Keep playing with different configurations until you have a base prompt you’re happy to start with (remember, you can continue to optimize this prompt against emerging edge cases). Test your prompt against any LLM available in the [playground](/Playground/playground)
 
 ![title](/images/prompts/savePrompt.png)
 
-Finally you can view existing versions of your prompt and view the diff between them by clickin 'Prompt Versions'
+Finally you can view existing versions of your prompt and view the diff between them by clicking 'Prompt Versions'
 
 ![title](/images/prompts/promptVersion.png)
 
+When you’re happy with the prompt - select “Save Prompt” to save it as one of your Prompts. You’ll see it under the [Prompts](https://docs.lytix.co/Prompts/prompts) page.
 
 # Prompt Testing
 
@@ -26,10 +31,46 @@ You can track and test against eedge cases for your prompts. Start by adding a n
 
 ### Adding A New Test Case
 
-Head over to the tab 'Test Cases' and click the `New Test Case` button.
+Pressure test your prompts against known failure-points and edge cases, before you deploy. 
+
+1. Add a new test case, representing a type of event you need to evaluate your prompt against. Add one case for each event type you’d like to evaluate. 
+    1. These can be examples of known failures such edge cases you’ve seen in production. Or ‘successful’ examples you’d like the model to produce more reliably.
 
 ![title](/images/prompts/testCasePage.png)
 
+Once you have all the cases you want to test against, you’re ready to Run a Test Suite. 
+
+![title](/images/prompts/newTestRun.png)
+
+2.. Start a New Test Run, and select the model and parameters you’d use in production (i.e. GPT4o, temperature of 0.9)
+
+![title](/images/prompts/newTestRunDialog.png)
+
+1. Once you Start your Test suite, lytix will run your prompt (with the provided model configurations), with the user/system prompt provided by each test case. Wait for the test case to run against each of your test cases. 
+2. For each test case, compare the “expected” output with the actual output, and decide if the test case “Passed” or “Failed”. 
+    1. Lytix will help you providing the semantic “distance” and actual character diff, between the expected and produced output
+    2. Lytix will automatically tag test cases as ‘passes’ or ‘failures’ based on this data, but remember you can always manually override these results!
+
+1. After identifying which test cases passed and failed, you’re ready to further-optimize your prompt to protect against failed test cases!
+
+
+# Prompt Optimization
+
+Now you have a sense of where your original prompt is failing. Next, let Lytix optimize your prompt to eliminate these failure cases. 
+
+![title](/images/prompts/optimizePrompt.png)
+
+1. Lytix will iterate on your original prompt, using the failed test cases and state of the art prompt engineering techniques. 
+![title](/images/prompts/optimizationWaiting.png)
+{/* ![title](/images/prompts/optimizePrompt.png) */}
+2. You can confirm that the new prompt passes the test cases that your previous prompt failed
+3. If you’re happy - save it as a new version of your prompt! You’ll see it under the latest version of the ‘base prompt’ you started with in the Prompts page.
+
+
+
+![title](/images/prompts/promptOptimizationResults.png) 
+
+{/* 
 Then enter the input (user and system) prompts and the expected output. Remember that values such as `{{ SYSTEM_PROMPT }}` will be replaced with the current system prompt when lytix runs your test case.
 
 ### Running A Test Suite
@@ -38,11 +79,9 @@ After you've collected a number of test cases you can then run the test suite by
 
 Here you'll be able to run your test suite against a given model with specific parameters. To get started, click the 'New Test Run' button.
 
-![title](/images/prompts/newTestRun.png)
 
 Now select the parameters you want to test against. **This should be the parameters you use in production**.
 
-![title](/images/prompts/newTestRunDialog.png)
 
 You can then see the result of the test run after it's finished. You have the option to manually view the diff and mark certain ones as pass/fail.
 
@@ -52,7 +91,7 @@ You can then see the result of the test run after it's finished. You have the op
 
 After you've run a test suite, you might find some edge cases that you want to fix. Lytix supports automatically optimizing your prompt to fix these edge cases in a given test suite. Just click the `Optimize Prompt` button on your test suite.
 
-![title](/images/prompts/optimizePrompt.png)
+
 
 You'll then be redirected to dialog where you can specify the model you'd like to optimize for.
 
@@ -60,8 +99,8 @@ You'll then be redirected to dialog where you can specify the model you'd like t
 
 It can take a few minutes to run the optimization. You can always come back later to view the results.
 
-![title](/images/prompts/optimizationWaiting.png)
+
 
 You can then view the results of the optimization, and save it as the current version of your prompt. You'll also see the test cases that were unable to pass after optimization.
 
-![title](/images/prompts/promptOptimizationResults.png)
+![title](/images/prompts/promptOptimizationResults.png) */}
