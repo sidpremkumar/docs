@@ -55,7 +55,7 @@
     },
     {
       "group": "Image & Video",
-      "pages": ["Multimodal/images", "Multimodal/video"]
+      "pages": ["MultiModal/images", "MultiModal/video"]
     },
     {
       "group": "Guardrails",
