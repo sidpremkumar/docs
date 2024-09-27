@@ -1,0 +1,48 @@
+---
+title: 'Images'
+description: 'How to use images with Lytix'
+---
+
+Passing images to any model uses the OpenAIs syntax. Underneath we'll convert the syntax for the model you're using.
+
+```py Python
+import base64
+
+# Encode the image to base64
+with open("some.png", "rb") as image_file:
+    encoded_string = base64.b64encode(image_file.read())
+    encoded_string = encoded_string.decode('utf-8')
+
+response = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        ...
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "whats this image?"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{encoded_string}"
+                    }
+                }
+            ]
+        },
+    ],
+)
+```
+
+Then you can switch to a model such as `claude-3-5-sonnet` and pass the image in with no code changes.
+
+```py Python
+from optimodel_server_types import ModelTypes,
+
+response = client.chat.completions.create(
+    model=ModelTypes.claude_3_5_sonnet.name,
+    messages=[
+      # Same as above
+      ...
+    ],
+)
+```
