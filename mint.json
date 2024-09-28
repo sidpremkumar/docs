@@ -58,6 +58,10 @@
       "pages": ["MultiModal/images", "MultiModal/video"]
     },
     {
+      "group": "Users",
+      "pages": ["Users/user-overview"]
+    },
+    {
       "group": "Guardrails",
       "pages": ["Guardrails/guardrails", "Guardrails/guardrails-setup"]
     },
