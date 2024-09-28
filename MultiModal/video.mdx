@@ -22,7 +22,7 @@ Lytix supports using Azure Blob Storage for video storage. To get started
 First we need to create a storage account (AKA bucket). To do that we'll need to create a resource group along with a storage account.
 
 ```sh
-> az group create --name lytix-storage-resource-group --location westus
+az group create --name lytix-storage-resource-group --location westus
 {
   "id": "/subscriptions/...",
   "location": "westus",
@@ -34,14 +34,19 @@ First we need to create a storage account (AKA bucket). To do that we'll need to
   "tags": null,
   "type": "Microsoft.Resources/resourceGroups"
 }
-> az storage account create --name lytixvideos --resource-group lytix-storage-resource-group
+```
+
+Next you can create a storage account. **Rememeber storage accounts are globally unique, so you'll need to change `lytixvideos` to something unique like `$COMPANY_NAME-videos`**
+
+```sh
+az storage account create --name lytixvideos --resource-group lytix-storage-resource-group
 {
   "accessTier": "Hot",
   "accountMigrationInProgress": null,
 ...
 ```
 
-Then create a container within the storage account.
+Then create a container within the storage account. Remember to change `lytixvideos` to the name of your storage account you used in the step above
 
 ```sh
 > az storage container create --name lytix-videos-gemini --account-name lytixvideos
@@ -132,7 +137,7 @@ We've created a simple wrapper script to make sending video to Lytix easy.
 ### Download the lytix client
 
 ```sh
-npm install @lytix/lytix
+npm install @lytix/client
 ```
 
 ### Uploading Video
