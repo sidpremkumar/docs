@@ -6,8 +6,7 @@ description: 'How to integrate Langchain with Lytix'
 
 Use Lytix to manage your evaluation and usage diretly with the Langchain SDK. Gain access to models across providers and manage your usage and billing.
 
-
-# Quickstart
+# Prerequisites
 
 <Info>
   **Prerequisite** First create a lytix account [here](https://lab.lytix.co/home/login)
@@ -17,10 +16,12 @@ Use Lytix to manage your evaluation and usage diretly with the Langchain SDK. Ga
 
 Start by creating and noting down a lytix api key. See instructions [here](/api-key-setup)
 
+# OpenAI
+
 ### Install the Langchain SDK
 
 ```sh Python
-pip install -qU langchain-openai
+pip install langchain-openai
 ```
 
 ### Initialize the ChatOpenAI client
@@ -49,7 +50,7 @@ model = ChatOpenAI(
 
 You can now continue using Langchain as you normally would and use this model as you would any other Langchain model.
 
-```js Typescript
+```js Python
 messages = [
     (
         "system",
@@ -72,6 +73,85 @@ You can pass these fields by updating your model as follows:
 model = ChatOpenAI(
   model="gpt-4o-mini",  # Update your base url to the lytix proxy
   base_url=f"https://api.lytix.co/proxy/v1/openai",
+  # Update your api key to the lytix api key
+  api_key=LYTIX_API_KEY,
+  default_headers={
+      ...,
+      # Optional fields
+      "userId": "sid@lytix.co",
+      "workflowName": "Example workflow",
+      "cacheTTL": "60",
+      "sessionId": "1234567890",
+  },
+)
+```
+
+Langchain supports the following optional fields with Lytix:
+
+- `sessionId`: You can pass a sessionId to track usage for a specific session.
+- `userId`: You can pass a userId to track usage for a specific user.
+- `workflowName`: You can pass a workflowName to track usage for a specific workflow. Learn more about workflows [here](/Workflows/workflows-setup).
+- `cacheTTL`: You can pass a cacheTTL to cache the response for a specific amount of time. Learn more about caching [here](/Caching/caching-setup).
+
+
+# Anthopic
+
+### Install the Langchain SDK
+
+```sh Python
+pip install langchain-anthropic
+```
+
+### Initialize the ChatOpenAI client
+
+```py Python
+from langchain_anthropic import ChatAnthropic
+
+model = ChatOpenAI(
+   model="claude-3-5-sonnet-20240620",
+    # Update your api key to the lytix api key
+    base_url=f"https://api.lytix.co/proxy/v1/anthropic", 
+    # Update your api key to the lytix api key
+    api_key="$LYTIX_API_KEY",
+    default_headers={
+        # Move your anthropic key to the default headers
+        "anthropicApiKey": "$OPENAI_API_KEY"
+    },
+)
+```
+
+<Info>
+  **🇪🇺 Note** You will need to use `https://eu.api.lytix.co/proxy/v1/anthropic` if you are in the EU region.
+</Info>
+
+### Continue Using Langchain Normally!
+
+You can now continue using Langchain as you normally would and use this model as you would any other Langchain model.
+
+```js Python
+messages = [
+    (
+        "system",
+        "You are a helpful assistant that translates English to French. Translate the user sentence.",
+    ),
+    ("human", "I love programming."),
+]
+
+response = model.invoke(messages)
+print("Got response: ", response)
+```
+
+
+
+### Optional Fields 
+
+You can pass these fields by updating your model as follows:
+
+```py Python
+model = ChatAnthropic(
+  model="claude-3-5-sonnet-20240620",  
+  # Update your base url to the lytix proxy
+  base_url=f"https://api.lytix.co/proxy/v1/anthropic",
   # Update your api key to the lytix api key
   api_key=LYTIX_API_KEY,
   default_headers={
