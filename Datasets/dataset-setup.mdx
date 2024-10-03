@@ -1,0 +1,51 @@
+---
+title: 'Datasets'
+description: 'How to setup & use datasets'
+---
+
+Datasets are ways to group and save LLM interactions. You can use datasets to save important interactions, or start to create a library of events to use for training, evaluation, and more.
+
+## Creating a Dataset
+
+You can create a dataset in the UI by going to the datasets tab and clicking the "Create Dataset" button.
+
+![Create Dataset](https://lytix-cdn.s3.amazonaws.com/documentationAssets/datasets/make-dataset.gif)
+
+## Manually Adding Interactions to a Dataset
+
+You can manually add single interactions to a dataset by clicking the "Add to Dataset" button on an interaction and selecting a dataset.
+
+![Add to Dataset](https://lytix-cdn.s3.amazonaws.com/documentationAssets/datasets/manually-add-to-dataset.gif)
+
+## Automatically Adding Certain Evaluations to a Dataset
+
+You can automatically add certain evaluations to a dataset by setting up a rule on the evaluation itself.
+
+![Automatically Add Evaluations](https://lytix-cdn.s3.amazonaws.com/documentationAssets/datasets/workflow-dataset-automation.gif)
+
+
+This will automatically add evaluations that meet the given critera to the dataset. This is helpful if you are trying to collect data to fine tune a model
+
+## Webhook On Dataset Add/Remove
+
+You can setup a webhook to be called when an interaction is added to a dataset. This is useful if you are trying store data in an external system.
+
+You can do this by clicking the dataset settings, and entering a webhook URL.
+
+![Webhook On Dataset Add](https://lytix-cdn.s3.amazonaws.com/documentationAssets/datasets/add-webhook-url.gif)
+
+
+The body of the webhook is as follows:
+
+```json
+{
+  "modelId": "string",
+  "messages": [
+    {
+      "role": "string",
+      "content": "string" | "array"
+    }
+  ],
+  "action": "ADDED" | "REMOVED"
+}
+```

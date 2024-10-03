@@ -96,6 +96,10 @@
       ]
     },
     {
+      "group": "Datasets",
+      "pages": ["Datasets/dataset-setup"]
+    },
+    {
       "group": "Caching",
       "pages": ["Caching/caching-setup", "Caching/using-caching"]
     },
