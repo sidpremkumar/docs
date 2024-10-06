@@ -102,12 +102,12 @@ Langchain supports the following optional fields with Lytix:
 pip install langchain-anthropic
 ```
 
-### Initialize the ChatOpenAI client
+### Initialize the ChatAnthropic client
 
 ```py Python
 from langchain_anthropic import ChatAnthropic
 
-model = ChatOpenAI(
+model = ChatAnthropic(
    model="claude-3-5-sonnet-20240620",
     # Update your api key to the lytix api key
     base_url=f"https://api.lytix.co/proxy/v1/anthropic", 
