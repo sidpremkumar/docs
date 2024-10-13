@@ -172,3 +172,54 @@ Langchain supports the following optional fields with Lytix:
 - `workflowName`: You can pass a workflowName to track usage for a specific workflow. Learn more about workflows [here](/Workflows/workflows-setup).
 - `cacheTTL`: You can pass a cacheTTL to cache the response for a specific amount of time. Learn more about caching [here](/Caching/caching-setup).
 
+
+# Capturing RAG Metrics
+
+Lytix also supports capturing RAG metrics directly from Langchain. 
+
+### Install lytix SDK
+
+```sh Python
+pip install lytix-py
+```
+
+### Setup A Langchain Callback Handler
+
+```py Python
+from langchain_anthropic import ChatAnthropic
+from lytix_py import LytixCreds, LytixLangchainCallback
+
+# Setup your Langchain Client
+# Or ChatOpenaAI
+llm = ChatAnthropic(
+    model="claude-3-5-sonnet-20240620",
+    base_url=f"{LytixCreds.LX_BASE_URL}/proxy/v2/anthropic",
+    api_key=LytixCreds.LX_API_KEY,
+    default_headers={
+        # Move your anthropic key to the default headers
+        "anthropicApiKey": ANTHOPIC_API_KEY,
+    },
+)
+
+# Sudo code, replace with your actual implementation
+history_aware_retriever = create_history_aware_retriever(
+    llm,  ...
+)
+qa_chain = create_stuff_documents_chain(
+    llm, ... 
+)
+
+qa = create_retrieval_chain(history_aware_retriever, qa_chain)
+
+res = qa.invoke(
+    {"input": "What is the most important part of the speech?"},
+    # Add the Lytix Callback Handler
+    {"callbacks": [LytixLangchainCallback()]},
+)
+```
+
+### View Metrics in the Lytix Dashboard
+
+You can view RAG metrics in the lytix dashboard when viewing an IO Event.
+
+![RAG Metrics On IO Event](https://lytix-cdn.s3.amazonaws.com/documentationAssets/ragEval/rag-eval-example.gif)
