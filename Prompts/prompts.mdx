@@ -128,12 +128,21 @@ lytix prompt commit
 ### Pass `promptId` & Use Prompt
 
 <Note>
-  **Note** Please follow instructions [here](/Quickstart/openai-integration) to setup the lytix OpenAI integration. 
+  ⚠️ **Important** You need to use the `v2` baseURL: `https://api.lytix.co/proxy/v2/openai`. Please follow instructions [here](/Quickstart/openai-integration) to setup the lytix OpenAI integration.
 </Note>
 
-Now you are readlytixPromptVariablesy to start using your prompt. You can now pass an empty `messages` array and add the `lytixPromptId` & `lytixPromptVariables` to your request:
+Now you are to use the `lytixPromptId` to start using your prompt. You can now pass an empty `messages` array and add the `lytixPromptId` & `lytixPromptVariables` to your request:
 
 ```ts
+const client = new OpenAI({
+  apiKey: LYTIX_API_KEY,
+  baseURL: "https://api.lytix.co/proxy/v2/openai";,
+  defaultHeaders: {
+    anthropicApiKey: ANTHROPIC_API_KEY,
+    openaiKey: OPENAI_API_KEY,
+  },
+});
+
 /**
  * This is dyntamically generated type based on the prompt variables defined in `prompt.json`. 
  * Run `lytix prompt sync` to update them
