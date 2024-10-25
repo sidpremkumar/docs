@@ -1,0 +1,19 @@
+---
+title: 'Custom Guardrail Alerts'
+description: 'How to get notified when guardrails fail'
+---
+
+Lytix supports alerting when guardrails fail based on a custom rule.
+
+Head over to the [Alerts](https://lab.lytix.co/home/alerts) page in the Lytix platform & Click New Alert
+
+![Custom Evaluation Alerts](/images/alerts/select-new-alert.gif)
+
+
+Then you can select the guardrail you'd like to alert on. For example:
+
+![Custom Guardrail Alerts](/images/alerts/custom-guardrail-alerts.png)
+
+In the above example, when the *count* of failures for the **META LLAMA PROMPT GUARD** is **Greater than or equal** to **1** over a **5 minute** period, you'll receive an alert.
+
+You can use these variables to create more complex alerts.

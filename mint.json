@@ -62,30 +62,8 @@
       "pages": ["Users/user-overview"]
     },
     {
-      "group": "Guardrails",
-      "pages": ["Guardrails/guardrails", "Guardrails/guardrails-setup"]
-    },
-    {
       "group": "Metadata",
       "pages": ["Metadata/metadata-setup"]
-    },
-    {
-      "group": "Guardrails",
-      "pages": ["Guardrails/guardrails", "Guardrails/guardrails-setup"]
-    },
-    {
-      "group": "Custom Errors",
-      "pages": [
-        "CustomErrors/custom-errors",
-        "CustomErrors/custom-errors-setup"
-      ]
-    },
-    {
-      "group": "Custom LLM Tracing",
-      "pages": [
-        "CustomLLMTracing/custom-llm-tracing",
-        "CustomLLMTracing/custom-llm-tracing-setup"
-      ]
     },
 
     {
@@ -106,6 +84,15 @@
     {
       "group": "Playground",
       "pages": ["Playground/playground"]
+    },
+    {
+      "group": "Alerts",
+      "pages": [
+        "Alerts/overview",
+        "Alerts/alert-channels",
+        "Alerts/custom-evaluation-alerts",
+        "Alerts/custom-guardrail-alerts"
+      ]
     },
     {
       "group": "Bot Evaluation",
@@ -131,6 +118,24 @@
       "pages": [
         "api-reference/endpoint/post-modelio",
         "api-reference/endpoint/post-optimodel"
+      ]
+    },
+    {
+      "group": "Guardrails",
+      "pages": ["Guardrails/guardrails", "Guardrails/guardrails-setup"]
+    },
+    {
+      "group": "Custom Errors",
+      "pages": [
+        "CustomErrors/custom-errors",
+        "CustomErrors/custom-errors-setup"
+      ]
+    },
+    {
+      "group": "Custom LLM Tracing",
+      "pages": [
+        "CustomLLMTracing/custom-llm-tracing",
+        "CustomLLMTracing/custom-llm-tracing-setup"
       ]
     },
     {
