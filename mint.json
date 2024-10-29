@@ -50,6 +50,7 @@
         "Quickstart/vercelai-integration",
         "Quickstart/gemini-integration",
         "Quickstart/langchain-integration",
+        "Quickstart/manually-importing-events",
         "Quickstart/optimodel-getting-started"
       ]
     },

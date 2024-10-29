@@ -1,0 +1,44 @@
+---
+title: 'Manually Importing Events'
+description: 'How to manually import events into Lytix'
+---
+
+You can manually import events and pass them through a custom evaluation. This can be helpful if you want to batch process a set of events to get their custom evaluation results.
+
+
+<video
+  controls
+  className="w-full aspect-video"
+  src="https://lytix-cdn.s3.us-east-1.amazonaws.com/documentationAssets/importEvents/import-events.mp4"
+  muted
+  loop
+></video>
+
+### JSON Format
+
+The import expects the following list format if you are uploading a JSON file.
+
+```json
+[
+    {
+        "messages": [
+            {
+                "role": "string",
+                "content": [
+                    {
+                        "type": "string",
+                        "text": "string",
+                        "source": {
+                            "type": "string",
+                            "mediaType": "string",
+                            "data": "string"
+                        }
+                    }
+                ]
+            }
+        ],
+        "model": "string"
+    },
+    ...
+]
+```
