@@ -1,0 +1,144 @@
+---
+title: 'Quickstart'
+description: 'How to setup async logging'
+---
+
+Lytix supports sending log events without being on the critial path. We use [Traceloop](https://traceloop.com) to power this feature.
+
+<Info>
+  **Prerequisite** Please see [here](/api-key-setup) to get and set your API Key environment variable.
+</Info>
+
+### Install the SDK
+
+To get started first download the relevant SDK for your language of choice.
+
+<CodeGroup>
+```bash Typescript
+npm install @lytix/client
+```
+
+```bash Python
+pip install lytix-py
+```
+</CodeGroup>
+
+
+### Initialize the Logger
+
+Now you can initialize the logger with your API key.
+
+<CodeGroup>
+```ts Typescript
+import { LytixAsyncLogger } from "@lytix/client";
+
+const logger = new LytixAsyncLogger({
+  lytixAPIKey: $LX_API_KEY,
+  providers: {
+    openAI: OpenAI,
+  },
+});
+
+logger.init();
+```
+
+```py Python
+from lytix_py import LytixAsyncLogger
+
+logger = LytixAsyncLogger(
+  lytixAPIKey=$LX_API_KEY,
+)
+
+logger.init()
+```
+</CodeGroup>
+
+<Note>
+**Note:** If you are in the EU you have to update the `baseURL` on the `LytixAsyncLogger` to `https://eu.api.lytix.co/v2/metrics/async`.
+</Note>
+
+
+### Start Collecting Logs 🚀
+
+Now you can call OpenAI as you normally would, and logs will automatically get sent to the Lytix platform.
+
+<CodeGroup>
+```ts Typescript
+const client = new OpenAI({
+    apiKey: $OPENAI_API_KEY,
+});
+
+await client.chat.completions.create({
+    messages: [
+        { role: "user", content: "Hello, how are you? Respond in JSON" },
+    ],
+    model: "gpt-4o-mini",
+    temperatu   re: 0.5,
+    max_tokens: 1000,
+});
+```
+
+```py Python
+
+client = OpenAI(
+    api_key=OPENAI_API_KEY
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    temperature=0,
+    max_tokens=50,
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": [
+            {"type": "text", "text": "Just say hello world"}
+        ]}
+    ]
+)
+```
+</CodeGroup>
+
+### Optional Metadata
+
+You can also add metadata to your logs. This can be useful for tracking things like user id's, session id's, or other metadata.
+
+To to this, you just need to first set the parameters on the logger: 
+
+<CodeGroup>
+```ts Typescript
+const response = await logger.withMetadata(
+    {
+      /**
+       * See below for all metadata options
+       */
+    },
+    async () => {
+      return await client.chat.completions.create({
+        ...
+      });
+    }
+);
+```
+
+
+```py Python
+logger.set_metadata(metadata={
+    """
+    See below for all metadata options
+    """
+})
+
+respose = await client.chat.completions.create(
+    ...
+)
+```
+</CodeGroup>
+
+#### Metadata Options
+
+You can set the following metadata fields:
+
+- `userId`: The user id of the user making the request
+- `sessionId`: The session id of the user making the request
+- `workflowName`: The name of the workflow the request was made in
+- `lytix-metadata-*`: Any additional metadata you would like to track, e.g. `lytix-metadata-env`: `dev` will add the metadata key `env` with the value `dev`

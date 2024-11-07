@@ -44,14 +44,19 @@
       ]
     },
     {
-      "group": "Quickstart",
+      "group": "Proxy",
       "pages": [
         "Quickstart/openai-integration",
         "Quickstart/vercelai-integration",
         "Quickstart/gemini-integration",
-        "Quickstart/langchain-integration",
-        "Quickstart/manually-importing-events",
-        "Quickstart/optimodel-getting-started"
+        "Quickstart/langchain-integration"
+      ]
+    },
+    {
+      "group": "Async Logging",
+      "pages": [
+        "AsyncLogging/async-logging-setup",
+        "Quickstart/manually-importing-events"
       ]
     },
     {
