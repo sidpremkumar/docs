@@ -1,0 +1,95 @@
+---
+title: 'Agent as Judge'
+description: 'How to use an agent as a judge'
+---
+
+Lytix supports evaluating agentic workflows. This means not only do we evaluate the input/output of the flow, but also can pass in a data source (e.g. repository) to further evaluate the output.
+
+<Info>
+  **🚨 Prerequisite** Login & setup your `lytix` CLI [here](/CLI/cli-login).
+</Info>
+
+## Create a Test Suite
+
+The first step is to create a test suite. This is a group of tests that will be run together.
+
+```bash
+lytix agent-test create-suite --suiteName "suite0"
+```
+<video
+  controls
+  className="w-full aspect-video"
+  src="https://lytix-cdn.s3.us-east-1.amazonaws.com/documentationAssets/agentAsJudge/agent-create-test-suite.mov"
+  muted
+  loop
+  autoPlay
+
+></video>
+
+### Update `config.json`
+
+After creating the test suite, you'll need to update the `config.json` file to define what repository you'd like to evaluate.
+
+```json
+{
+  "repository": {
+    "remote": "github",
+    "branch": "main",
+    "repository": "Lytix-Labs/optimodel"
+  }
+}
+```
+
+<Info>
+  **Note** We currently only support public GitHub repositories. Please reach out to <a href="mailto:support@lytix.com">support@lytix.com</a> if you'd like to evaluate a private repository.
+</Info>
+
+## Create a Test in a Suite
+
+```bash
+lytix agent-test add-test --testName "test0" --suiteName "suite0"
+```
+<video
+  controls
+  className="w-full aspect-video"
+  src="https://lytix-cdn.s3.us-east-1.amazonaws.com/documentationAssets/agentAsJudge/agent-create-test-run.mov"
+  muted
+  loop
+  autoPlay
+
+></video>
+
+### Update `start.py`
+
+To collect test data, we want to allow full flexibility. Thus, we create a `start.py` file in the folder of the test. This file will be executed to collect the data.
+
+The **only** requirement is that the `start.py` file prints the following JSON object to stdout:
+
+```json
+{
+  "messages": ["..."],
+  "output": "...",
+  "sources": ["..."]
+}
+```
+
+Where `messages` is an array of `{role: "user" | "assistant", content: "..."}` and `sources` is an array of file paths that contain the data we want to evaluate the output against.
+
+<Info>
+  **Note** Currently we only support a single `user` message.
+</Info>
+
+## Run a Test Suite
+
+```bash
+lytix agent-test run --suiteName "suite0"
+```
+<video
+  controls
+  className="w-full aspect-video"
+  src="https://lytix-cdn.s3.us-east-1.amazonaws.com/documentationAssets/agentAsJudge/agent-run-test-suite.mov"
+  muted
+  loop
+  autoPlay
+
+></video>

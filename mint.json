@@ -53,6 +53,10 @@
       ]
     },
     {
+      "group": "Image & Video",
+      "pages": ["MultiModal/images", "MultiModal/video"]
+    },
+    {
       "group": "Async Logging",
       "pages": [
         "AsyncLogging/async-logging-setup",
@@ -60,8 +64,8 @@
       ]
     },
     {
-      "group": "Image & Video",
-      "pages": ["MultiModal/images", "MultiModal/video"]
+      "group": "Testing",
+      "pages": ["Testing/agent-as-judge"]
     },
     {
       "group": "Users",
@@ -143,6 +147,10 @@
         "CustomLLMTracing/custom-llm-tracing",
         "CustomLLMTracing/custom-llm-tracing-setup"
       ]
+    },
+    {
+      "group": "CLI",
+      "pages": ["CLI/cli-login"]
     },
     {
       "group": "🧨 Beta",
