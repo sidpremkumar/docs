@@ -73,7 +73,7 @@ await client.chat.completions.create({
         { role: "user", content: "Hello, how are you? Respond in JSON" },
     ],
     model: "gpt-4o-mini",
-    temperatu   re: 0.5,
+    temperature: 0.5,
     max_tokens: 1000,
 });
 ```
@@ -102,7 +102,7 @@ response = client.chat.completions.create(
 
 You can also add metadata to your logs. This can be useful for tracking things like user id's, session id's, or other metadata.
 
-To to this, you just need to first set the parameters on the logger: 
+To do this, you just need to first set the parameters on the logger: 
 
 <CodeGroup>
 ```ts Typescript
