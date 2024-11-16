@@ -5,6 +5,15 @@ description: 'How to capture user feedback in lytix'
 
 Lytix supports capturing feedback directly from users, similar to 👍/👎 mechanisms.
 
+<video
+  controls
+  className="w-full aspect-video"
+  src="https://lytix-cdn.s3.us-east-1.amazonaws.com/documentationAssets/userFeedback/userFeedbackDemo.mov"
+  muted
+  loop
+  autoPlay
+></video>
+
 <Info>
 **Note:** You likely want to be using the [proxy](/Quickstart/openai-integration) integration to capture feedback. This is because you need the `modelIOEventId` to be able to capture feedback.
 </Info>
@@ -59,3 +68,5 @@ response = requests.request("POST", url, headers=headers, data=payload)
 You can view feedback in the Lytix platform when viewing specific IO Events.
 
 ![Feedback](/images/users/user-feedback.png)
+
+Or you can view all feedback as a graph under the [User Feedback]("https://lab.lytix.co/home/users/feedback) page. 
