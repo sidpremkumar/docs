@@ -26,7 +26,7 @@ from openai import OpenAI
 
 client = OpenAI(
   # Update your base url to the lytix proxy
-  base_url=f"https://api.lytix.co/proxy/v1/openai",
+  base_url=f"https://api.lytix.co/proxy/v2/openai",
   # Update your api key to the lytix api key
   api_key="$LYTIX_API_KEY",
   default_headers={
@@ -42,7 +42,7 @@ import OpenAI from "openai";
 
 const client = new OpenAI({
   // Update your base url to the lytix proxy
-  baseURL: "https://api.lytix.co/proxy/v1/openai",
+  baseURL: "https://api.lytix.co/proxy/v2/openai",
   // Update your api key to the lytix api key
   apiKey: '$LYTIX_API_KEY',
   defaultHeaders: {
@@ -55,7 +55,7 @@ const client = new OpenAI({
 </CodeGroup>
 
 <Info>
-  **🇪🇺 Note** You will need to use `https://eu.api.lytix.co/proxy/v1/openai` if you are in the EU region.
+  **🇪🇺 Note** You will need to use `https://eu.api.lytix.co/proxy/v2/openai` if you are in the EU region.
 </Info>
 
 ### Optional Fields
@@ -443,7 +443,7 @@ from optimodel import ModelTypes
 from openai import OpenAI
 
 client = OpenAI(
-  base_url="https://api.lytix.co/proxy/v1/openai",
+  base_url="https://api.lytix.co/proxy/v2/openai",
   api_key="$LYTIX_API_KEY",
   default_headers={
     # Add your lytix api key
@@ -468,7 +468,7 @@ import { ModelTypes } from "@lytix/client";
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  baseURL: "https://api.lytix.co/proxy/v1/openai",
+  baseURL: "https://api.lytix.co/proxy/v2/openai",
   apiKey: "$LYTIX_API_KEY",
   defaultHeaders: {
     openaiKey: "$OPENAI_API_KEY",
