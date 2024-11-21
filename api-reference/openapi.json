@@ -231,11 +231,11 @@
               },
               "inputTokens": {
                 "description": "Input tokens to associate with the IO event",
-                "type": "string"
+                "type": "number"
               },
               "outputTokens": {
                 "description": "Output tokens to associate with the IO event",
-                "type": "string"
+                "type": "number"
               },
               "latency": {
                 "description": "Latency in milliseconds to associate with the IO event",
