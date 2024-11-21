@@ -75,15 +75,18 @@ For example, a `prompt.json` file with a `toEcho` variable might look like this:
 }
 ```
 
-<video
-  controls
-  className="w-full aspect-video"
-  src="https://lytix-cdn.s3.amazonaws.com/documentationAssets/prompts/lytix-add-variables.mov"
-  muted
-  loop
-></video>
+#### Update Prompts
 
+After we've created the needed variables, we can update our system or user prompt by updating the `inputs.mdx` file: 
 
+```mdx
+<UserPrompt>
+  Please echo the following variable: ${{ toEcho }}
+</UserPrompt>
+<SystemPrompt>
+  You are a helpful assistant.
+</SystemPrompt>
+```
 
 ### Commit Changes
 
