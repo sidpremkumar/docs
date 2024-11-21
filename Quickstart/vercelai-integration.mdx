@@ -143,6 +143,75 @@ const response = await generateText({
 </CodeGroup>
 
 
+
+# Groq
+
+
+### Step 1: Install the SDK
+
+<CodeGroup>
+
+```sh Typescript
+npm i @ai-sdk/xai ai
+```
+</CodeGroup>
+
+### Step 2: Update You Client
+
+<CodeGroup>
+
+```js Typescript
+import { createXai } from "@ai-sdk/xai";
+
+const groq = createXai({
+    baseURL: "https://api.lytix.co/proxy/v2/groq",
+    apiKey: "$LYTIX_API_KEY",
+    headers: {
+      groqApiKey: "$GROQ_API_KEY",
+    },
+});
+```
+</CodeGroup>
+
+<Info>
+  **🇪🇺 Note** You will need to use `https://eu.api.lytix.co/proxy/v2/groq` if you are in the EU region.
+</Info>
+
+
+### Step 3: Start Querying
+
+<CodeGroup>
+```js Typescript
+import { generateText } from "ai";
+
+const response = await generateText({
+    // Choose your model here
+    model: xai("gemma2-9b-it"),
+
+    /**
+     * Either
+     */
+    prompt: "What is the meaning of life?",
+    system: "Always respond with a JSON object",
+
+    /**
+     * Or
+     */
+    messages: [
+        { role: "user", content: "What is the meaning of life?" },
+        { role: "system", content: "Always respond with a JSON object" },
+    ],
+    temperature: 0.5,
+    maxTokens: 1000,
+    headers: {
+        // ...see extra headers below
+    },
+});
+```
+</CodeGroup>
+
+
+
 # Extra Headers
 
 When querying you can pass the following headers to the client:
