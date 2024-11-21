@@ -224,6 +224,22 @@
               "sessionId": {
                 "description": "Session Id to associate with the IO event",
                 "type": "string"
+              },
+              "workflowName": {
+                "description": "Workflow name to associate with the IO event",
+                "type": "string"
+              },
+              "inputTokens": {
+                "description": "Input tokens to associate with the IO event",
+                "type": "string"
+              },
+              "outputTokens": {
+                "description": "Output tokens to associate with the IO event",
+                "type": "string"
+              },
+              "latency": {
+                "description": "Latency in milliseconds to associate with the IO event",
+                "type": "number"
               }
             }
           }
